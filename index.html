@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>CBSE History Museum - Historical Timeline View (Default)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #1a1a3e, #24243e);
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* Mode Toggle Bar */
+        .mode-toggle-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            z-index: 1000;
+            border-bottom: 2px solid #ff9800;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #ff9800;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .mode-btn {
+            background: #333;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: #ff9800;
+            color: #1a1a2e;
+        }
+
+        .mode-btn:hover {
+            background: #ffb74d;
+            color: #1a1a2e;
+        }
+
+        /* 3D Container */
+        #threeCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: none;
+        }
+
+        /* ========== TIMELINE VIEW (DEFAULT) ========== */
+        .timeline-view {
+            padding-top: 80px;
+            padding-bottom: 50px;
+            padding-left: 20px;
+            padding-right: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .timeline-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .timeline-header h1 span {
+            color: #ff9800;
+        }
+
+        .timeline-header .subtitle {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        /* Timeline Container */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        /* Vertical line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ff9800, #ff5722, #ff9800);
+            border-radius: 2px;
+        }
+
+        /* Timeline Items */
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .timeline-item.left {
+            justify-content: flex-start;
+        }
+
+        .timeline-item.right {
+            justify-content: flex-end;
+        }
+
+        /* Timeline Content */
+        .timeline-content {
+            width: 45%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 16px;
+            padding: 20px;
+            border-left: 5px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        /* Year Badge */
+        .year-badge {
+            display: inline-block;
+            background: #ff9800;
+            color: #1a1a2e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .timeline-content .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content .subtitle {
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .grade-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 15px;
+            font-size: 10px;
+            margin-right: 8px;
+        }
+
+        .location-badge {
+            display: inline-block;
+            background: rgba(255, 152, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 15px;
+            font-size: 10px;
+        }
+
+        .cause-preview {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #333;
+        }
+
+        /* Timeline Dot */
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: #ff9800;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            z-index: 2;
+            top: 25px;
+        }
+
+        /* Timeline Era Labels */
+        .era-label {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 152, 0, 0.2);
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #ff9800;
+            white-space: nowrap;
+            z-index: 3;
+        }
+
+        /* Navigation Controls */
+        .timeline-controls {
+            position: sticky;
+            top: 70px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: #ff9800;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #1a1a2e;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: #ffb74d;
+            transform: scale(1.02);
+        }
+
+        .search-box {
+            padding: 8px 15px;
+            border-radius: 30px;
+            border: none;
+            width: 250px;
+            outline: none;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #333;
+            border: none;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: #ff9800;
+            color: #1a1a2e;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff9800;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .scroll-indicator:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            max-width: 550px;
+            width: 90%;
+            border-radius: 20px;
+            padding: 30px;
+            border-top: 5px solid #ff9800;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            color: #ff9800;
+            margin-bottom: 15px;
+        }
+
+        .modal-content .close {
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.2s;
+        }
+
+        .modal-content .close:hover {
+            color: white;
+        }
+
+        .modal-year {
+            display: inline-block;
+            background: #ff9800;
+            color: #1a1a2e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mode-toggle-bar { flex-direction: column; }
+            .timeline-view { padding-top: 120px; }
+            .timeline-controls { top: 110px; flex-direction: column; align-items: center; }
+            .timeline::before { left: 20px; }
+            .timeline-item { justify-content: flex-start !important; padding-left: 40px; }
+            .timeline-content { width: calc(100% - 40px); }
+            .timeline-dot { left: 20px; }
+            .era-label { display: none; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff9800;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mode Toggle Bar -->
+    <div class="mode-toggle-bar">
+        <div class="logo">🏛️ CBSE HISTORY MUSEUM <span>Historical Timeline</span></div>
+        <div class="mode-buttons">
+            <button id="timelineModeBtn" class="mode-btn active">📅 TIMELINE VIEW</button>
+            <button id="threeDModeBtn" class="mode-btn">🎮 3D TOUR (ROBOT GUIDE)</button>
+        </div>
+    </div>
+
+    <!-- 3D Canvas Container -->
+    <div id="threeCanvas"></div>
+
+    <!-- Timeline View Container (DEFAULT) -->
+    <div id="timelineView" class="timeline-view">
+        <div class="timeline-header">
+            <h1>📅 <span>Historical Timeline</span> of Indian & World History</h1>
+            <p class="subtitle">CBSE Social Science | Grade 6-10 | Chronological Order</p>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="timeline-controls">
+            <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search topics...">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-grade="all">All Grades</button>
+                <button class="filter-btn" data-grade="Grade 6">📘 Grade 6</button>
+                <button class="filter-btn" data-grade="Grade 7">📙 Grade 7</button>
+                <button class="filter-btn" data-grade="Grade 8">📕 Grade 8</button>
+                <button class="filter-btn" data-grade="Grade 9">📗 Grade 9</button>
+                <button class="filter-btn" data-grade="Grade 10">📓 Grade 10</button>
+            </div>
+            <button id="resetTimeline" class="nav-btn">🔄 Reset</button>
+        </div>
+
+        <!-- Timeline Container -->
+        <div class="timeline" id="timelineContainer"></div>
+
+        <!-- Scroll to top button -->
+        <div class="scroll-indicator" id="scrollToTop">⬆</div>
+    </div>
+
+    <!-- Modal for details -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div id="modalYear" class="modal-year"></div>
+            <p id="modalSubtitle" style="color: #ccc; margin: 10px 0;"></p>
+            <p id="modalCauseEffect" style="margin-top: 15px; line-height: 1.6;"></p>
+            <p id="modalLocation" style="margin-top: 15px; color: #ff9800;"></p>
+            <p id="modalGrade" style="margin-top: 5px;"></p>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script>
+        // ============================================================
+        // DATA: All Topics with Year/Period (Chronological Order)
+        // ============================================================
+        const allTopics = [
+            // Prehistory - Grade 6
+            { id: 1, title: "Discovery of Fire", subtitle: "Early human innovation", year: "c. 1.7 million years ago", era: "Prehistory", causeEffect: "Cause: Environmental adaptation need. Effect: Allowed cooking, protection from animals, social gathering around fire.", location: "Main Corridor", grade: "Grade 6", color: "#4caf50" },
+            { id: 2, title: "Palaeolithic Age", subtitle: "Stone tools and nomadic life", year: "c. 2 million - 10,000 BCE", era: "Prehistory", causeEffect: "Cause: Need to hunt and process food. Effect: Development of flaked stone tools, cave art, nomadic lifestyle.", location: "Main Corridor", grade: "Grade 6", color: "#8bc34a" },
+            { id: 3, title: "Neolithic Revolution", subtitle: "Beginning of farming", year: "c. 10,000 - 4,000 BCE", era: "Prehistory", causeEffect: "Cause: Climate warming after Ice Age. Effect: Domestication of plants and animals, settled village life.", location: "Main Corridor", grade: "Grade 6", color: "#cddc39" },
+            { id: 4, title: "Invention of Wheel", subtitle: "Transportation revolution", year: "c. 3500 BCE", era: "Ancient", causeEffect: "Cause: Need for efficient transport. Effect: Revolutionized trade, pottery making, and warfare.", location: "Main Corridor", grade: "Grade 6", color: "#cddc39" },
+            { id: 5, title: "Indus Valley Civilisation", subtitle: "Urban planning and trade", year: "c. 2600 - 1900 BCE", era: "Ancient India", causeEffect: "Cause: Surplus agriculture. Effect: Organized cities with drainage systems, trade with Mesopotamia.", location: "Main Corridor", grade: "Grade 6", color: "#8bc34a" },
+            { id: 6, title: "Indus Valley Decline", subtitle: "End of Harappan civilization", year: "c. 1900 - 1300 BCE", era: "Ancient India", causeEffect: "Cause: Climate change, river drying, possible invasion. Effect: Abandonment of cities, migration eastward.", location: "Main Corridor", grade: "Grade 6", color: "#8bc34a" },
+            
+            // Silk Route - Grade 10 context
+            { id: 7, title: "Silk Route Trade", subtitle: "Global connections begin", year: "2nd century BCE - 15th century CE", era: "Global Trade", causeEffect: "Cause: Demand for luxury goods (silk, spices). Effect: Spread of religions (Buddhism, Islam), technologies, and diseases.", location: "Main Corridor", grade: "Grade 10", color: "#ffeb3b" },
+            
+            // Medieval India - Grade 7
+            { id: 8, title: "Arrival of Islam in India", subtitle: "Arab conquest of Sindh", year: "c. 712 CE", era: "Medieval India", causeEffect: "Cause: Arab conquest under Muhammad bin Qasim. Effect: Introduction of Islamic culture, Sufi traditions, new architecture.", location: "Main Corridor", grade: "Grade 7", color: "#ff9800" },
+            { id: 9, title: "Rajput Clans Emerge", subtitle: "Regional kingdoms of North India", year: "8th - 12th century CE", era: "Medieval India", causeEffect: "Cause: Decline of Harsha's empire. Effect: Rise of regional kingdoms, bardic traditions, Rajput valor.", location: "Main Corridor", grade: "Grade 7", color: "#ff9800" },
+            { id: 10, title: "Chola Empire", subtitle: "Brihadeshwara Temple built", year: "c. 1010 CE", era: "Medieval India", causeEffect: "Cause: Chola imperial ambition and devotion to Shiva. Effect: Symbol of Chola power, patronage of bronze sculpture.", location: "Main Corridor", grade: "Grade 7", color: "#ffc107" },
+            { id: 11, title: "Mahmud of Ghazni's Raids", subtitle: "Somnath Temple attacked", year: "1026 CE", era: "Medieval India", causeEffect: "Cause: Mahmud's desire for wealth. Effect: Weakening of temple patronage, long-term memory of invasion.", location: "Main Corridor", grade: "Grade 7", color: "#ff9800" },
+            { id: 12, title: "Delhi Sultanate", subtitle: "Establishment of Muslim rule in Delhi", year: "1206 - 1526 CE", era: "Medieval India", causeEffect: "Cause: Turkic invasions from Central Asia. Effect: Indo-Islamic architecture (Qutub Minar), administrative systems.", location: "Main Corridor", grade: "Grade 7", color: "#ff5722" },
+            { id: 13, title: "Bhakti & Sufi Movements", subtitle: "Kabir, Guru Nanak", year: "15th - 17th century CE", era: "Medieval India", causeEffect: "Cause: Social need for religious reform. Effect: Challenged orthodoxy, promoted equality, Sikhism foundation.", location: "Main Corridor", grade: "Grade 7", color: "#ff5722" },
+            
+            // Mughal Empire - Classroom 7A
+            { id: 14, title: "Babur's Conquest of Delhi", subtitle: "Establishment of Mughal Empire", year: "1526 CE", era: "Mughal Empire", causeEffect: "Cause: Weakness of Ibrahim Lodi, Babur's military skill. Effect: Establishment of Mughal Empire in India, gunpowder warfare.", location: "Classroom 7A", grade: "Grade 7", color: "#9c27b0" },
+            { id: 15, title: "Akbar's Policies", subtitle: "Sulh-i-kul and religious tolerance", year: "1556 - 1605 CE", era: "Mughal Empire", causeEffect: "Cause: Need to unify religiously diverse empire. Effect: Reduced religious persecution, stable administration, Din-i-Ilahi.", location: "Classroom 7A", grade: "Grade 7", color: "#ab47bc" },
+            { id: 16, title: "Taj Mahal Built", subtitle: "Shah Jahan's monument to Mumtaz", year: "1632 - 1653 CE", era: "Mughal Empire", causeEffect: "Cause: Shah Jahan's love for his wife. Effect: Architectural masterpiece, UNESCO World Heritage site.", location: "Classroom 7A", grade: "Grade 7", color: "#ab47bc" },
+            
+            // Colonial India - Grade 8
+            { id: 17, title: "East India Company Founded", subtitle: "British trading company chartered", year: "1600 CE", era: "Colonial India", causeEffect: "Cause: European desire for Indian spices and trade. Effect: Company became political power over time.", location: "Main Corridor", grade: "Grade 8", color: "#2196f3" },
+            { id: 18, title: "Battle of Plassey", subtitle: "Company gains Bengal", year: "1757 CE", era: "Colonial India", causeEffect: "Cause: Conflict over trade rights; Clive's conspiracy with Mir Jafar. Effect: Company gained Bengal revenue, became political power.", location: "Main Corridor", grade: "Grade 8", color: "#03a9f4" },
+            { id: 19, title: "Battle of Buxar", subtitle: "Company gets Diwani rights", year: "1764 CE", era: "Colonial India", causeEffect: "Cause: Mir Qasim's resistance to Company abuses. Effect: Company got diwani rights of Bengal, Bihar, Odisha.", location: "Main Corridor", grade: "Grade 8", color: "#03a9f4" },
+            { id: 20, title: "Permanent Settlement", subtitle: "Cornwallis revenue system", year: "1793 CE", era: "Colonial India", causeEffect: "Cause: Need for fixed revenue. Effect: Zamindars became landlords, peasant distress, indigo rebellion.", location: "Main Corridor", grade: "Grade 8", color: "#29b6f6" },
+            { id: 21, title: "Abolition of Sati", subtitle: "Raja Rammohan Roy's campaign", year: "1829 CE", era: "Social Reform", causeEffect: "Cause: Rammohan Roy's persistent campaign using scriptures. Effect: Sati declared illegal; era of legal social reform began.", location: "Main Corridor", grade: "Grade 8", color: "#00bcd4" },
+            { id: 22, title: "Hindu Widows' Remarriage Act", subtitle: "Ishwar Chandra Vidyasagar's efforts", year: "1856 CE", era: "Social Reform", causeEffect: "Cause: Vidyasagar's campaign based on Vedic texts. Effect: Legalized widow remarriage, slowly changed orthodox practices.", location: "Main Corridor", grade: "Grade 8", color: "#00bcd4" },
+            { id: 23, title: "Revolt of 1857", subtitle: "First war of Indian independence", year: "1857 CE", era: "Colonial India", causeEffect: "Cause: Greased cartridges, Doctrine of Lapse, economic exploitation. Effect: End of East India Company rule, Crown Raj began.", location: "Main Corridor", grade: "Grade 8", color: "#009688" },
+            
+            // Indian Nationalism - Classroom 10A
+            { id: 24, title: "Indian National Congress Founded", subtitle: "First political party of India", year: "1885 CE", era: "Indian Nationalism", causeEffect: "Cause: Economic exploitation, need for united political voice. Effect: Rise of organized nationalism, platform for independence movement.", location: "Classroom 10A", grade: "Grade 8-10", color: "#e91e63" },
+            { id: 25, title: "Partition of Bengal", subtitle: "Lord Curzon's divide and rule", year: "1905 CE", era: "Indian Nationalism", causeEffect: "Cause: Curzon's administrative reason; actual: divide and rule. Effect: Swadeshi and Boycott movement, annulment in 1911.", location: "Classroom 10A", grade: "Grade 10", color: "#f06292" },
+            { id: 26, title: "Jallianwala Bagh Massacre", subtitle: "Amritsar tragedy", year: "13 April 1919 CE", era: "Indian Nationalism", causeEffect: "Cause: Rowlatt Act protest; General Dyer fired on unarmed crowd. Effect: Nationwide outrage; led to Non-Cooperation Movement.", location: "Classroom 10A", grade: "Grade 10", color: "#f06292" },
+            { id: 27, title: "Non-Cooperation Movement", subtitle: "Gandhi's first mass movement", year: "1920 - 1922 CE", era: "Indian Nationalism", causeEffect: "Cause: Jallianwala Bagh massacre and Khilafat issue. Effect: Boycott of British goods, courts, schools; withdrawn after Chauri Chaura.", location: "Classroom 10A", grade: "Grade 10", color: "#ec407a" },
+            { id: 28, title: "Dandi March (Salt Satyagraha)", subtitle: "Civil disobedience begins", year: "12 March - 6 April 1930 CE", era: "Indian Nationalism", causeEffect: "Cause: British salt tax, Lahore Congress demand for Purna Swaraj. Effect: Massive civil disobedience, Gandhi-Irwin Pact, Round Table Conferences.", location: "Classroom 10A", grade: "Grade 10", color: "#ec407a" },
+            { id: 29, title: "Quit India Movement", subtitle: "Do or Die", year: "8 August 1942 CE", era: "Indian Nationalism", causeEffect: "Cause: Failure of Cripps Mission, fear of Japanese invasion. Effect: Massive arrests, underground movements, hastened British departure.", location: "Classroom 10A", grade: "Grade 10", color: "#ad1457" },
+            { id: 30, title: "Indian Independence & Partition", subtitle: "Freedom and division", year: "15 August 1947 CE", era: "Indian Nationalism", causeEffect: "Cause: Mountbatten Plan announced Partition on religious lines. Effect: Mass migration of 14 million, communal violence, India-Pakistan hostility.", location: "Classroom 10A", grade: "Grade 10", color: "#ad1457" },
+            
+            // World History - Grade 9
+            { id: 31, title: "French Revolution", subtitle: "Storming of the Bastille", year: "14 July 1789 CE", era: "World History", causeEffect: "Cause: Economic bankruptcy, Enlightenment ideas, social inequality. Effect: Spread of democracy, abolition of feudalism, Napoleonic Code.", location: "Main Corridor", grade: "Grade 9", color: "#3f51b5" },
+            { id: 32, title: "Napoleonic Code", subtitle: "Legal reforms in Europe", year: "1804 CE", era: "World History", causeEffect: "Cause: Napoleon's rise to power. Effect: Modern legal systems, merit-based advancement, spread across Europe.", location: "Main Corridor", grade: "Grade 9", color: "#3f51b5" },
+            { id: 33, title: "Unification of Germany", subtitle: "Bismarck's realpolitik", year: "18 January 1871 CE", era: "World History", causeEffect: "Cause: Prussian desire for German unification. Effect: German Empire proclaimed, shifted European balance of power.", location: "Main Corridor", grade: "Grade 9", color: "#5c6bc0" },
+            { id: 34, title: "Russian Revolution", subtitle: "Bolshevik takeover", year: "25-26 October 1917 CE", era: "World History", causeEffect: "Cause: WWI hardships, food shortages, Tsar's failure. Effect: USSR formed, spread of communism, Cold War tensions.", location: "Main Corridor", grade: "Grade 9", color: "#5c6bc0" },
+            { id: 35, title: "Treaty of Versailles", subtitle: "End of WWI", year: "28 June 1919 CE", era: "World History", causeEffect: "Cause: Allied victory and desire to punish Germany. Effect: German economic crisis, hyperinflation, resentment exploited by Hitler.", location: "Main Corridor", grade: "Grade 9", color: "#7986cb" },
+            { id: 36, title: "Hitler Becomes Chancellor", subtitle: "Rise of Nazism", year: "30 January 1933 CE", era: "World History", causeEffect: "Cause: Great Depression, fear of communism, political maneuvering. Effect: Totalitarian Nazi state, persecution of Jews, WWII.", location: "Main Corridor", grade: "Grade 9", color: "#7986cb" }
+        ];
+
+        // Group by era for timeline
+        const eraColors = {
+            "Prehistory": "#8bc34a",
+            "Ancient": "#cddc39",
+            "Ancient India": "#8bc34a",
+            "Global Trade": "#ffeb3b",
+            "Medieval India": "#ff9800",
+            "Mughal Empire": "#9c27b0",
+            "Colonial India": "#2196f3",
+            "Social Reform": "#00bcd4",
+            "Indian Nationalism": "#e91e63",
+            "World History": "#3f51b5"
+        };
+
+        let currentMode = "timeline";
+        let is3DLoaded = false;
+
+        // ============================================================
+        // TIMELINE VIEW RENDERER (DEFAULT)
+        // ============================================================
+        function renderTimelineView(filterGrade = "all", searchTerm = "") {
+            const container = document.getElementById("timelineContainer");
+            if (!container) return;
+            
+            let filteredTopics = [...allTopics];
+            
+            // Filter by grade
+            if (filterGrade !== "all") {
+                filteredTopics = filteredTopics.filter(t => t.grade === filterGrade);
+            }
+            
+            // Filter by search term
+            if (searchTerm.trim() !== "") {
+                const term = searchTerm.toLowerCase();
+                filteredTopics = filteredTopics.filter(t => 
+                    t.title.toLowerCase().includes(term) || 
+                    t.subtitle.toLowerCase().includes(term) ||
+                    t.causeEffect.toLowerCase().includes(term) ||
+                    t.year.toLowerCase().includes(term)
+                );
+            }
+            
+            if (filteredTopics.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: 50px;">🔍 No matching historical events found. Try a different search.</div>`;
+                return;
+            }
+            
+            // Generate timeline HTML
+            let html = '';
+            
+            // Add era labels
+            let lastEra = "";
+            
+            filteredTopics.forEach((topic, index) => {
+                // Add era divider if era changes
+                if (topic.era !== lastEra) {
+                    const eraY = 25 + (index * 85);
+                    html += `<div class="era-label" style="top: ${eraY}px;">📌 ${topic.era}</div>`;
+                    lastEra = topic.era;
+                }
+                
+                const side = index % 2 === 0 ? "left" : "right";
+                const borderColor = topic.color;
+                
+                html += `
+                    <div class="timeline-item ${side}" data-id="${topic.id}">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content" style="border-left-color: ${borderColor};">
+                            <span class="year-badge">📅 ${topic.year}</span>
+                            <div class="title">${topic.title}</div>
+                            <div class="subtitle">${topic.subtitle}</div>
+                            <div>
+                                <span class="grade-badge">${topic.grade}</span>
+                                <span class="location-badge">📍 ${topic.location}</span>
+                            </div>
+                            <div class="cause-preview">📖 ${topic.causeEffect.substring(0, 100)}${topic.causeEffect.length > 100 ? '...' : ''}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+            // Add click handlers
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const id = parseInt(item.dataset.id);
+                    const topic = allTopics.find(t => t.id === id);
+                    if (topic) showModal(topic);
+                });
+            });
+        }
+        
+        function showModal(topic) {
+            const modal = document.getElementById("modal");
+            document.getElementById("modalTitle").innerHTML = topic.title;
+            document.getElementById("modalYear").innerHTML = `📅 ${topic.year}`;
+            document.getElementById("modalSubtitle").innerHTML = topic.subtitle;
+            document.getElementById("modalCauseEffect").innerHTML = `<strong>📖 Cause & Effect:</strong><br><br>${topic.causeEffect}`;
+            document.getElementById("modalLocation").innerHTML = `📍 Location: ${topic.location}`;
+            document.getElementById("modalGrade").innerHTML = `🎓 ${topic.grade}`;
+            modal.style.display = "flex";
+        }
+        
+        // ============================================================
+        // 3D MODE LOADER (Same as previous)
+        // ============================================================
+        async function load3DMode() {
+            if (is3DLoaded) {
+                document.getElementById("threeCanvas").style.display = "block";
+                return;
+            }
+            
+            const container = document.getElementById("threeCanvas");
+            container.innerHTML = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; background:rgba(0,0,0,0.8); padding:20px; border-radius:10px;">🤖 Loading 3D Robot Tour...</div>';
+            container.style.display = "block";
+            
+            // Simplified 3D mode using the same logic as before
+            try {
+                const module = await import('./3d-tour-mini.js');
+                if (module.init3DTour) {
+                    module.init3DTour(container);
+                    is3DLoaded = true;
+                }
+            } catch (error) {
+                // Fallback: show message
+                container.innerHTML = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; background:rgba(0,0,0,0.8); padding:20px; border-radius:10px;">🎮 3D mode requires WebGL support. Using Timeline View is recommended.</div>';
+                setTimeout(() => switchToTimeline(), 3000);
+            }
+        }
+        
+        function unload3DMode() {
+            document.getElementById("threeCanvas").style.display = "none";
+            if (window.threeCleanup) window.threeCleanup();
+        }
+        
+        // ============================================================
+        // MODE SWITCHING
+        // ============================================================
+        function switchTo3D() {
+            currentMode = "3d";
+            document.getElementById("timelineView").style.display = "none";
+            document.getElementById("threeCanvas").style.display = "block";
+            document.getElementById("timelineModeBtn").classList.remove("active");
+            document.getElementById("threeDModeBtn").classList.add("active");
+            load3DMode();
+        }
+        
+        function switchToTimeline() {
+            currentMode = "timeline";
+            document.getElementById("timelineView").style.display = "block";
+            document.getElementById("threeCanvas").style.display = "none";
+            document.getElementById("threeDModeBtn").classList.remove("active");
+            document.getElementById("timelineModeBtn").classList.add("active");
+            unload3DMode();
+            
+            // Refresh timeline with current filters
+            const searchTerm = document.getElementById("searchInput")?.value || "";
+            const activeFilter = document.querySelector(".filter-btn.active")?.dataset.grade || "all";
+            renderTimelineView(activeFilter, searchTerm);
+        }
+        
+        // ============================================================
+        // INITIALIZE TIMELINE VIEW (DEFAULT)
+        // ============================================================
+        function initTimelineView() {
+            renderTimelineView("all", "");
+            
+            // Search functionality
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) {
+                searchInput.addEventListener("input", (e) => {
+                    const activeFilter = document.querySelector(".filter-btn.active")?.dataset.grade || "all";
+                    renderTimelineView(activeFilter, e.target.value);
+                });
+            }
+            
+            // Filter buttons
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    const grade = btn.dataset.grade;
+                    const searchTerm = document.getElementById("searchInput")?.value || "";
+                    renderTimelineView(grade, searchTerm);
+                });
+            });
+            
+            // Reset button
+            const resetBtn = document.getElementById("resetTimeline");
+            if (resetBtn) {
+                resetBtn.addEventListener("click", () => {
+                    document.getElementById("searchInput").value = "";
+                    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+                    document.querySelector(".filter-btn[data-grade='all']").classList.add("active");
+                    renderTimelineView("all", "");
+                });
+            }
+            
+            // Scroll to top
+            const scrollBtn = document.getElementById("scrollToTop");
+            if (scrollBtn) {
+                scrollBtn.addEventListener("click", () => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                });
+            }
+            
+            // Modal close
+            const modal = document.getElementById("modal");
+            const closeBtn = document.querySelector(".close");
+            if (closeBtn) {
+                closeBtn.onclick = () => { modal.style.display = "none"; };
+            }
+            window.onclick = (e) => {
+                if (e.target === modal) modal.style.display = "none";
+            };
+        }
+        
+        // ============================================================
+        // CREATE MINIMAL 3D MODULE (inline)
+        // ============================================================
+        const threeDScript = `
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+        
+        let scene, camera, renderer, labelRenderer, controls, robotGroup, animationId;
+        
+        export function init3DTour(container) {
+            container.innerHTML = '';
+            
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x050b1a);
+            scene.fog = new THREE.FogExp2(0x050b1a, 0.008);
+            
+            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(-30, 4, 15);
+            
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+            
+            labelRenderer = new CSS2DRenderer();
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.domElement.style.position = 'absolute';
+            labelRenderer.domElement.style.top = '0px';
+            labelRenderer.domElement.style.left = '0px';
+            container.appendChild(labelRenderer.domElement);
+            
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.target.set(0, 1.5, 0);
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0x404060);
+            scene.add(ambientLight);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+            dirLight.position.set(10, 20, 5);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+            
+            // Floor
+            const floor = new THREE.Mesh(new THREE.PlaneGeometry(100, 30), new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 0.4 }));
+            floor.rotation.x = -Math.PI / 2;
+            floor.position.y = -0.2;
+            floor.receiveShadow = true;
+            scene.add(floor);
+            
+            const grid = new THREE.GridHelper(100, 25, 0x88aaff, 0x335588);
+            grid.position.y = -0.1;
+            scene.add(grid);
+            
+            // Simple corridor path
+            const pathPoints = [];
+            for (let x = -30; x <= 60; x += 2) pathPoints.push(new THREE.Vector3(x, 0, 0));
+            const pathGeo = new THREE.BufferGeometry().setFromPoints(pathPoints);
+            const pathMat = new THREE.LineBasicMaterial({ color: 0xffaa44 });
+            const pathLine = new THREE.Line(pathGeo, pathMat);
+            scene.add(pathLine);
+            
+            // Sample panels
+            const colors = [0x4caf50, 0x8bc34a, 0xcddc39, 0xffeb3b, 0xff9800, 0xffc107, 0xff5722, 0x9c27b0, 0x2196f3, 0x03a9f4, 0xe91e63, 0x3f51b5];
+            for (let i = 0; i < 12; i++) {
+                const cube = new THREE.Mesh(new THREE.BoxGeometry(2.5, 1.8, 0.2), new THREE.MeshStandardMaterial({ color: colors[i % colors.length], emissive: colors[i % colors.length], emissiveIntensity: 0.15 }));
+                cube.position.set(-28 + i * 8, 1.5, i % 2 === 0 ? -4 : 4);
+                cube.castShadow = true;
+                scene.add(cube);
+            }
+            
+            // Simple robot
+            robotGroup = new THREE.Group();
+            robotGroup.position.set(-28, 0, -2);
+            const body = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.2, 0.6), new THREE.MeshStandardMaterial({ color: 0x44aaff }));
+            body.position.y = 0.6;
+            robotGroup.add(body);
+            const head = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), new THREE.MeshStandardMaterial({ color: 0xffcc88 }));
+            head.position.y = 1.2;
+            robotGroup.add(head);
+            scene.add(robotGroup);
+            
+            let time = 0;
+            function animate() {
+                animationId = requestAnimationFrame(animate);
+                time += 0.02;
+                robotGroup.position.y = Math.sin(time * 2) * 0.03;
+                controls.update();
+                renderer.render(scene, camera);
+                labelRenderer.render(scene, camera);
+            }
+            animate();
+            
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                labelRenderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            window.threeCleanup = () => { if (animationId) cancelAnimationFrame(animationId); renderer.dispose(); };
+        }
+        `;
+        
+        const blob = new Blob([threeDScript], { type: 'application/javascript' });
+        const blobUrl = URL.createObjectURL(blob);
+        
+        async function load3DModeWithBlob() {
+            if (is3DLoaded) {
+                document.getElementById("threeCanvas").style.display = "block";
+                return;
+            }
+            const container = document.getElementById("threeCanvas");
+            container.innerHTML = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; background:rgba(0,0,0,0.8); padding:20px; border-radius:10px;">🤖 Loading 3D Robot Tour...</div>';
+            container.style.display = "block";
+            try {
+                const module = await import(blobUrl);
+                if (module.init3DTour) {
+                    module.init3DTour(container);
+                    is3DLoaded = true;
+                }
+            } catch (error) {
+                container.innerHTML = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; background:rgba(0,0,0,0.8); padding:20px; border-radius:10px;">❌ 3D mode error. Please use Timeline View.</div>';
+                setTimeout(() => switchToTimeline(), 3000);
+            }
+        }
+        
+        // Override load3DMode
+        window.load3DMode = load3DModeWithBlob;
+        
+        // ============================================================
+        // START APPLICATION (Timeline View is DEFAULT)
+        // ============================================================
+        document.getElementById("timelineModeBtn").addEventListener("click", switchToTimeline);
+        document.getElementById("threeDModeBtn").addEventListener("click", () => {
+            window.load3DMode();
+            switchTo3D();
+        });
+        
+        // Override switchTo3D
+        window.switchTo3DOriginal = switchTo3D;
+        window.switchTo3D = function() {
+            currentMode = "3d";
+            document.getElementById("timelineView").style.display = "none";
+            document.getElementById("threeCanvas").style.display = "block";
+            document.getElementById("timelineModeBtn").classList.remove("active");
+            document.getElementById("threeDModeBtn").classList.add("active");
+            window.load3DMode();
+        };
+        
+        switchTo3D = window.switchTo3D;
+        switchToTimeline = switchToTimeline;
+        
+        document.getElementById("timelineModeBtn").onclick = switchToTimeline;
+        document.getElementById("threeDModeBtn").onclick = switchTo3D;
+        
+        initTimelineView();
+        
+        // Timeline View is default
+        document.getElementById("timelineView").style.display = "block";
+        document.getElementById("threeCanvas").style.display = "none";
+    </script>
+</body>
+</html>
