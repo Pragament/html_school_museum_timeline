@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>CBSE History Museum - Human-Like Robot Walking Tour Guide</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>">
     <style>
         body { margin: 0; overflow: hidden; font-family: 'Segoe UI', 'Poppins', 'Arial', sans-serif; }
         
@@ -62,6 +63,7 @@
         }
         
         .tour-controls button:hover { background: #ffb74d; transform: scale(1.02); }
+        .tour-controls button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
         .tour-controls .stop-btn { background: #f44336; color: white; }
         .tour-controls .pause-btn { background: #ffc107; }
         .tour-controls .resume-btn { background: #4caf50; color: white; }
@@ -101,6 +103,8 @@
     <div class="controls-hint">🖱️ Drag to look | Robot faces direction while walking 🚶</div>
     
     <div class="tour-controls" id="tourControls">
+        <button id="prevBtn">⏮ PREVIOUS</button>
+        <button id="nextBtn">NEXT ⏭</button>
         <button id="startTourBtn" class="start-btn">▶ START TOUR</button>
         <button id="pauseTourBtn" class="pause-btn">⏸ PAUSE</button>
         <button id="resumeTourBtn" class="resume-btn">▶ RESUME</button>
@@ -111,6 +115,7 @@
             <span>⏩</span>
         </div>
         <div class="status-text" id="tourStatus">⚪ ROBOT: IDLE</div>
+        <div class="status-text" id="tourCounter">0 of 0</div>
     </div>
     
     <div class="info-panel" id="infoPanel" style="display: none;">
@@ -134,47 +139,66 @@
         import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
         // --- Waypoints with directions (facing angle while walking) ---
-        const waypoints = [
-            // CORRIDOR PANELS (Grade 6-7, left side) - walking forward (facing +X direction)
-            { id: 1, type: "corridor", title: "📜 Introduction to History", subtitle: "Timelines & Archaeological Sources", causeEffect: "Cause: Need to organize events. Effect: Compare civilizations.", pos: { x: -28, z: -5, y: 1.5 }, robotPos: { x: -28, z: -2.5 }, facingAngle: 0, color: 0x4caf50, grade: "Grade 6", room: "Corridor" },
-            { id: 2, type: "corridor", title: "🔥 Early Humans", subtitle: "Discovery of Fire & Stone Age", causeEffect: "Cause: Environmental adaptation. Effect: Cooking, protection.", pos: { x: -20, z: -5, y: 1.5 }, robotPos: { x: -20, z: -2.5 }, facingAngle: 0, color: 0x8bc34a, grade: "Grade 6", room: "Corridor" },
-            { id: 3, type: "corridor", title: "🏛️ Indus Valley", subtitle: "Urban Planning (2600-1900 BCE)", causeEffect: "Cause: Surplus agriculture. Effect: Organized cities.", pos: { x: -12, z: -5, y: 1.5 }, robotPos: { x: -12, z: -2.5 }, facingAngle: 0, color: 0xcddc39, grade: "Grade 6", room: "Corridor" },
-            { id: 4, type: "corridor", title: "🌍 Silk Route & Trade", subtitle: "2nd Century BCE - 15th Century", causeEffect: "Cause: Demand for luxury goods. Effect: Spread of religions.", pos: { x: -4, z: -5, y: 1.5 }, robotPos: { x: -4, z: -2.5 }, facingAngle: 0, color: 0xffeb3b, grade: "Grade 10", room: "Corridor" },
-            { id: 5, type: "corridor", title: "☪️ Islam & Rajputs", subtitle: "c. 712 CE", causeEffect: "Cause: Arab conquest. Effect: Indo-Islamic culture.", pos: { x: 4, z: -5, y: 1.5 }, robotPos: { x: 4, z: -2.5 }, facingAngle: 0, color: 0xff9800, grade: "Grade 7", room: "Corridor" },
-            { id: 6, type: "corridor", title: "🛕 Chola Empire", subtitle: "Brihadeshwara Temple (1010 CE)", causeEffect: "Cause: Chola ambition. Effect: Bronze art.", pos: { x: 12, z: -5, y: 1.5 }, robotPos: { x: 12, z: -2.5 }, facingAngle: 0, color: 0xffc107, grade: "Grade 7", room: "Corridor" },
-            { id: 7, type: "corridor", title: "⚔️ Temple Desecration", subtitle: "Somnath (1026 CE)", causeEffect: "Cause: Mahmud's raids. Effect: Weakened patronage.", pos: { x: 20, z: -5, y: 1.5 }, robotPos: { x: 20, z: -2.5 }, facingAngle: 0, color: 0xff9800, grade: "Grade 7", room: "Corridor" },
-            { id: 8, type: "corridor", title: "🕉️ Bhakti & Sufi", subtitle: "Kabir, Guru Nanak (15th Century)", causeEffect: "Cause: Need for reform. Effect: Challenged orthodoxy.", pos: { x: 28, z: -5, y: 1.5 }, robotPos: { x: 28, z: -2.5 }, facingAngle: 0, color: 0xff5722, grade: "Grade 7", room: "Corridor" },
-            
-            // TURN RIGHT into Classroom 7A (facing +Z direction after turn)
-            { id: 9, type: "classroom_entry", title: "🏫 ENTERING CLASSROOM 7A", subtitle: "Mughal Empire - Turn Right", causeEffect: "Detailed Mughal panels inside", pos: { x: 32, z: 0, y: 1.5 }, robotPos: { x: 30, z: 0.5 }, facingAngle: Math.PI / 2, color: 0x9c27b0, grade: "Transition", room: "Classroom 7A" },
-            { id: 10, type: "classroom_detail", title: "👑 Mughal Empire", subtitle: "Babur's Conquest (1526 CE)", causeEffect: "Cause: Weakness of Ibrahim Lodi. Effect: Mughal Empire.", pos: { x: 34, z: 8, y: 1.5 }, robotPos: { x: 34, z: 5.5 }, facingAngle: Math.PI / 2, color: 0x9c27b0, grade: "Grade 7", room: "Classroom 7A" },
-            { id: 11, type: "classroom_detail", title: "🤝 Akbar's Policies", subtitle: "Sulh-i-kul (1575-1580 CE)", causeEffect: "Cause: Need to unify empire. Effect: Reduced persecution.", pos: { x: 38, z: 8, y: 1.5 }, robotPos: { x: 38, z: 5.5 }, facingAngle: Math.PI / 2, color: 0xab47bc, grade: "Grade 7", room: "Classroom 7A" },
-            
-            // TURN LEFT to exit classroom (facing -X direction to go back)
-            { id: 12, type: "corridor_exit", title: "🚪 EXIT CLASSROOM", subtitle: "Returning to Corridor", causeEffect: "Continue timeline journey", pos: { x: 32, z: 0, y: 1.5 }, robotPos: { x: 30, z: 0.5 }, facingAngle: -Math.PI / 2, color: 0x888888, grade: "Transition", room: "Corridor" },
-            
-            // CORRIDOR PANELS (right side, Grade 8) - walking forward (facing +X)
-            { id: 13, type: "corridor", title: "🏢 East India Company", subtitle: "Charter 1600 CE", causeEffect: "Cause: Trade ambitions. Effect: Company became political power.", pos: { x: -12, z: 5, y: 1.5 }, robotPos: { x: -12, z: 2.5 }, facingAngle: 0, color: 0x2196f3, grade: "Grade 8", room: "Corridor" },
-            { id: 14, type: "corridor", title: "⚔️ Plassey & Buxar", subtitle: "1757 & 1764 CE", causeEffect: "Cause: Trade conflicts. Effect: Company gained diwani rights.", pos: { x: -4, z: 5, y: 1.5 }, robotPos: { x: -4, z: 2.5 }, facingAngle: 0, color: 0x03a9f4, grade: "Grade 8", room: "Corridor" },
-            { id: 15, type: "corridor", title: "🌾 Permanent Settlement", subtitle: "1793 CE", causeEffect: "Cause: Need for fixed revenue. Effect: Zamindars as landlords.", pos: { x: 4, z: 5, y: 1.5 }, robotPos: { x: 4, z: 2.5 }, facingAngle: 0, color: 0x29b6f6, grade: "Grade 8", room: "Corridor" },
-            { id: 16, type: "corridor", title: "🕯️ Social Reform", subtitle: "Abolition of Sati (1829)", causeEffect: "Cause: Rammohan Roy's campaigns. Effect: Legal reforms.", pos: { x: 12, z: 5, y: 1.5 }, robotPos: { x: 12, z: 2.5 }, facingAngle: 0, color: 0x00bcd4, grade: "Grade 8", room: "Corridor" },
-            { id: 17, type: "corridor", title: "🔫 Revolt of 1857", subtitle: "Meerut to Delhi", causeEffect: "Cause: Greased cartridges. Effect: End of Company rule.", pos: { x: 20, z: 5, y: 1.5 }, robotPos: { x: 20, z: 2.5 }, facingAngle: 0, color: 0x009688, grade: "Grade 8", room: "Corridor" },
-            { id: 18, type: "corridor", title: "🇮🇳 Indian National Congress", subtitle: "Founded 1885", causeEffect: "Cause: Economic exploitation. Effect: Rise of nationalism.", pos: { x: 28, z: 5, y: 1.5 }, robotPos: { x: 28, z: 2.5 }, facingAngle: 0, color: 0xe91e63, grade: "Grade 8", room: "Corridor" },
-            
-            // TURN LEFT into Classroom 10A (facing -Z direction)
-            { id: 19, type: "classroom_entry", title: "🏫 ENTERING CLASSROOM 10A", subtitle: "Indian Nationalism - Turn Left", causeEffect: "Detailed Gandhian movement panels", pos: { x: 35, z: 0, y: 1.5 }, robotPos: { x: 35, z: -0.5 }, facingAngle: -Math.PI / 2, color: 0xe91e63, grade: "Transition", room: "Classroom 10A" },
-            { id: 20, type: "classroom_detail", title: "✊ Jallianwala Bagh", subtitle: "1919 & Non-Cooperation", causeEffect: "Cause: Rowlatt Act. Effect: Mass boycott.", pos: { x: 39, z: -8, y: 1.5 }, robotPos: { x: 39, z: -5.5 }, facingAngle: -Math.PI / 2, color: 0xf06292, grade: "Grade 10", room: "Classroom 10A" },
-            { id: 21, type: "classroom_detail", title: "🧂 Dandi March", subtitle: "12 March 1930", causeEffect: "Cause: British salt tax. Effect: Civil disobedience.", pos: { x: 43, z: -8, y: 1.5 }, robotPos: { x: 43, z: -5.5 }, facingAngle: -Math.PI / 2, color: 0xec407a, grade: "Grade 10", room: "Classroom 10A" },
-            { id: 22, type: "classroom_detail", title: "🎌 Quit India & Partition", subtitle: "1942 & 1947", causeEffect: "Cause: Cripps Mission failure. Effect: Independence.", pos: { x: 47, z: -8, y: 1.5 }, robotPos: { x: 47, z: -5.5 }, facingAngle: -Math.PI / 2, color: 0xad1457, grade: "Grade 10", room: "Classroom 10A" },
-            
-            // TURN RIGHT to exit classroom (facing +X)
-            { id: 23, type: "corridor_exit", title: "🚪 EXIT CLASSROOM", subtitle: "Returning to Corridor", causeEffect: "Continue to world history", pos: { x: 35, z: 0, y: 1.5 }, robotPos: { x: 35, z: -0.5 }, facingAngle: 0, color: 0x888888, grade: "Transition", room: "Corridor" },
-            
-            // CORRIDOR PANELS (World History) - walking forward
-            { id: 24, type: "corridor", title: "🇫🇷 French Revolution", subtitle: "Bastille 1789", causeEffect: "Cause: Economic bankruptcy. Effect: Spread of democracy.", pos: { x: 52, z: 5, y: 1.5 }, robotPos: { x: 52, z: 2.5 }, facingAngle: 0, color: 0x3f51b5, grade: "Grade 9", room: "Corridor" },
-            { id: 25, type: "corridor", title: "🇷🇺 Russian Revolution", subtitle: "1917", causeEffect: "Cause: WWI hardships. Effect: USSR formed.", pos: { x: 60, z: 5, y: 1.5 }, robotPos: { x: 60, z: 2.5 }, facingAngle: 0, color: 0x5c6bc0, grade: "Grade 9", room: "Corridor" },
-            { id: 26, type: "corridor", title: "⚡ Nazism & Holocaust", subtitle: "1933-1945", causeEffect: "Cause: Treaty of Versailles. Effect: WWII, Cold War.", pos: { x: 68, z: 5, y: 1.5 }, robotPos: { x: 68, z: 2.5 }, facingAngle: 0, color: 0x7986cb, grade: "Grade 9", room: "Corridor" }
-        ];
+        const TIMELINE_API_URL = "https://staticapis.pragament.com/lms/cbse/topic-timeline.json";
+
+        let waypoints = [];
+        let panelsGroup = [];
+
+        async function fetchTimelineData() {
+            const res = await fetch(TIMELINE_API_URL);
+            if (!res.ok) {
+                throw new Error(`Failed to fetch timeline: ${res.status}`);
+            }
+            return await res.json();
+        }
+
+        function normalizeTimelineData(apiData) {
+            // Check if data is nested under timeline.subtopics
+            let items = [];
+            if (apiData && apiData.timeline && Array.isArray(apiData.timeline.subtopics)) {
+                items = apiData.timeline.subtopics;
+            } else if (Array.isArray(apiData)) {
+                items = apiData;
+            } else {
+                items = apiData.data || apiData.topics || [];
+            }
+
+            return items.map((item, index) => {
+                const x = -28 + index * 8;
+                const panelZ = index % 2 === 0 ? -5 : 5;
+                const robotZ = index % 2 === 0 ? -2.5 : 2.5;
+
+                // Format the subtitle with year_period if available
+                let subtitleStr = item.subtopic_name || item.subtitle || "";
+                if (item.year_period) {
+                    subtitleStr += ` (${item.year_period})`;
+                }
+
+                return {
+                    id: item.id || index + 1,
+                    type: "corridor",
+                    title: item.topic_name || item.title || item.name || `Topic ${index + 1}`,
+                    subtitle: subtitleStr,
+                    causeEffect: item.cause_effect || item.causeEffect || item.description || "",
+                    pos: { x, y: 1.5, z: panelZ },
+                    robotPos: { x, z: robotZ },
+                    facingAngle: 0,
+                    color: getColorByIndex(index),
+                    grade: item.grade ? `Grade ${item.grade}` : "CBSE",
+                    room: "Corridor",
+                    raw: item
+                };
+            });
+        }
+
+        function getColorByIndex(index) {
+            const colors = [
+                0x4caf50, 0x8bc34a, 0xcddc39, 0xffeb3b, 0xff9800,
+                0xff5722, 0x2196f3, 0x03a9f4, 0x9c27b0, 0xe91e63,
+                0x3f51b5, 0x009688
+            ];
+            return colors[index % colors.length];
+        }
 
         // --- Scene Setup ---
         const scene = new THREE.Scene();
@@ -206,7 +230,7 @@
         controls.maxPolarAngle = Math.PI / 2.2;
         controls.target.set(0, 1.5, 0);
         
-        setTimeout(() => document.getElementById('loading').style.display = 'none', 1000);
+        // Loading control is handled in init()
         
         // --- Lighting ---
         const ambientLight = new THREE.AmbientLight(0x404060);
@@ -233,49 +257,99 @@
         const corridorLine = new THREE.Line(corridorGeo, corridorMat);
         scene.add(corridorLine);
         
-        // Classroom floors
-        const classroomMat = new THREE.MeshStandardMaterial({ color: 0x2a2a4e, roughness: 0.5 });
-        const classroom7A = new THREE.Mesh(new THREE.PlaneGeometry(14, 8), classroomMat);
-        classroom7A.rotation.x = -Math.PI / 2;
-        classroom7A.position.set(36, -0.15, 7);
-        classroom7A.receiveShadow = true;
-        scene.add(classroom7A);
+        // Removed vestigial classroom meshes as they don't apply to the flat API timeline
         
-        const classroom10A = new THREE.Mesh(new THREE.PlaneGeometry(14, 8), classroomMat);
-        classroom10A.rotation.x = -Math.PI / 2;
-        classroom10A.position.set(41, -0.15, -7);
-        classroom10A.receiveShadow = true;
-        scene.add(classroom10A);
-        
-        const gridHelper = new THREE.GridHelper(120, 30, 0x88aaff, 0x335588);
+        let gridHelper = new THREE.GridHelper(120, 30, 0x88aaff, 0x335588);
         gridHelper.position.y = -0.1;
         scene.add(gridHelper);
         
         // --- Create Panels ---
-        const panelsGroup = [];
-        waypoints.forEach(wp => {
-            const geometry = new THREE.BoxGeometry(wp.type === "classroom_detail" ? 2.5 : 2.8, 1.8, 0.2);
-            const material = new THREE.MeshStandardMaterial({ color: wp.color, emissive: wp.color, emissiveIntensity: 0.15 });
-            const cube = new THREE.Mesh(geometry, material);
-            cube.position.set(wp.pos.x, wp.pos.y, wp.pos.z);
-            cube.castShadow = true;
-            cube.userData = { ...wp };
-            scene.add(cube);
+        const panelMeshes = [];
+        const panelLabels = [];
+
+        function scaleSceneForData() {
+            const step = 8;
+            const corridorLength = waypoints.length * step + 60;
+            const centerOffsetX = corridorLength / 2 - 30; // Shift the center to the right so it starts at -30
+
+            // Update Floor
+            floor.geometry.dispose();
+            floor.geometry = new THREE.PlaneGeometry(corridorLength, 40);
+            floor.position.x = centerOffsetX;
+
+            // Update Grid
+            if (gridHelper) {
+                scene.remove(gridHelper);
+            }
+            gridHelper = new THREE.GridHelper(corridorLength, Math.floor(corridorLength / 4), 0x88aaff, 0x335588);
+            gridHelper.position.y = -0.1;
+            gridHelper.position.x = centerOffsetX;
+            scene.add(gridHelper);
+
+            // Update Corridor Line
+            corridorLine.geometry.dispose();
+            const corridorPoints = [];
+            for (let x = -30; x <= corridorLength - 30; x += 2) {
+                corridorPoints.push(new THREE.Vector3(x, 0, 0));
+            }
+            corridorLine.geometry = new THREE.BufferGeometry().setFromPoints(corridorPoints);
             
-            const div = document.createElement('div');
-            div.textContent = wp.title;
-            div.style.backgroundColor = `rgba(${(wp.color >> 16 & 255)}, ${(wp.color >> 8 & 255)}, ${wp.color & 255}, 0.85)`;
-            div.style.color = 'white';
-            div.style.padding = '4px 10px';
-            div.style.borderRadius = '20px';
-            div.style.fontSize = '12px';
-            div.style.fontWeight = 'bold';
-            const label = new CSS2DObject(div);
-            label.position.set(wp.pos.x, wp.pos.y + 1.2, wp.pos.z);
-            scene.add(label);
-            
-            panelsGroup.push({ mesh: cube, data: wp, robotPos: wp.robotPos });
-        });
+            // Tune fog
+            scene.fog.density = 0.003;
+        }
+
+        function clearPanels() {
+            panelMeshes.forEach(mesh => scene.remove(mesh));
+            panelLabels.forEach(label => scene.remove(label));
+            panelMeshes.length = 0;
+            panelLabels.length = 0;
+            panelsGroup.length = 0;
+        }
+
+        function createPanelsFromWaypoints() {
+            clearPanels();
+
+            waypoints.forEach(wp => {
+                const geometry = new THREE.BoxGeometry(
+                    wp.type === "classroom_detail" ? 2.5 : 2.8,
+                    1.8,
+                    0.2
+                );
+
+                const material = new THREE.MeshStandardMaterial({
+                    color: wp.color,
+                    emissive: wp.color,
+                    emissiveIntensity: 0.15
+                });
+
+                const cube = new THREE.Mesh(geometry, material);
+                cube.position.set(wp.pos.x, wp.pos.y, wp.pos.z);
+                cube.castShadow = true;
+                cube.userData = { ...wp };
+                scene.add(cube);
+                panelMeshes.push(cube);
+
+                const div = document.createElement("div");
+                div.textContent = wp.title;
+                div.style.backgroundColor = `rgba(${(wp.color >> 16) & 255}, ${(wp.color >> 8) & 255}, ${wp.color & 255}, 0.85)`;
+                div.style.color = "white";
+                div.style.padding = "4px 10px";
+                div.style.borderRadius = "20px";
+                div.style.fontSize = "12px";
+                div.style.fontWeight = "bold";
+
+                const label = new CSS2DObject(div);
+                label.position.set(wp.pos.x, wp.pos.y + 1.2, wp.pos.z);
+                scene.add(label);
+                panelLabels.push(label);
+
+                panelsGroup.push({
+                    mesh: cube,
+                    data: wp,
+                    robotPos: wp.robotPos
+                });
+            });
+        }
         
         // --- Create Robot with movable parts for human-like walking ---
         const robotGroup = new THREE.Group();
@@ -409,16 +483,57 @@
         let isRobotMoving = false;
         let perPanelStayDuration = 5000;
         let walkDuration = 2500;
-        let lastTimestamp = 0;
         
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
         const startBtn = document.getElementById('startTourBtn');
         const pauseBtn = document.getElementById('pauseTourBtn');
         const resumeBtn = document.getElementById('resumeTourBtn');
         const stopBtn = document.getElementById('stopTourBtn');
         const seekBar = document.getElementById('tourSeekBar');
         const tourStatusSpan = document.getElementById('tourStatus');
+        const tourCounterSpan = document.getElementById('tourCounter');
         const locationTag = document.getElementById('locationTag');
         
+        function updateCounter() {
+            if (waypoints.length > 0) {
+                tourCounterSpan.innerHTML = `📍 ${currentWaypointIndex + 1} of ${waypoints.length}`;
+            } else {
+                tourCounterSpan.innerHTML = `📍 0 of 0`;
+            }
+        }
+        
+        function updatePrevNextButtons() {
+            prevBtn.disabled = currentWaypointIndex <= 0;
+            nextBtn.disabled = currentWaypointIndex >= waypoints.length - 1;
+        }
+
+        function goToWaypoint(index) {
+            if (index < 0 || index >= waypoints.length) return;
+
+            if (tourTimeout) clearTimeout(tourTimeout);
+            isAutoTourActive = false;
+            isPaused = false;
+
+            currentWaypointIndex = index;
+            updateCounter();
+            seekBar.value = waypoints.length > 1
+                ? (currentWaypointIndex / (waypoints.length - 1)) * 100
+                : 0;
+            const wp = waypoints[index];
+
+            tourStatusSpan.innerHTML = `Moving to ${wp.title}`;
+            moveRobotToWaypoint(index, () => {
+                if (wp.type !== "corridor_exit" && wp.type !== "classroom_entry") {
+                    showPanelInfo(wp);
+                } else {
+                    updateLocationTag(wp.room);
+                    tourStatusSpan.innerHTML = `🤖 ${wp.type === "classroom_entry" ? "Entering classroom..." : "Returning to corridor..."}`;
+                }
+                updatePrevNextButtons();
+            });
+        }
+
         function updateLocationTag(room) {
             if (room === "Corridor") locationTag.innerHTML = "📍 MAIN CORRIDOR | 🚶 Robot faces forward";
             else if (room.includes("Classroom")) locationTag.innerHTML = `🏫 ${room} | 🚶 Robot turns to face panels`;
@@ -427,13 +542,24 @@
         
         function showPanelInfo(data) {
             const infoPanel = document.getElementById('infoPanel');
-            document.getElementById('infoTitle').innerHTML = `${data.title} <span style="font-size:12px;">(${data.grade})</span>`;
-            document.getElementById('infoSubtitle').innerHTML = data.subtitle;
-            document.getElementById('infoCauseEffect').innerHTML = `<strong>Cause & Effect:</strong> ${data.causeEffect}`;
+
+            document.getElementById('infoTitle').innerHTML =
+                `${data.title || "Untitled"} <span style="font-size:12px">${data.grade || ""}</span>`;
+
+            document.getElementById('infoSubtitle').innerHTML =
+                data.subtitle || "Timeline event";
+
+            document.getElementById('infoCauseEffect').innerHTML =
+                `<strong>Details:</strong> ${data.causeEffect || "No description available."}`;
+
             infoPanel.style.display = 'block';
+
             clearTimeout(window.infoTimeout);
-            window.infoTimeout = setTimeout(() => {}, 5000);
-            updateLocationTag(data.room);
+            window.infoTimeout = setTimeout(() => {
+                infoPanel.style.display = 'none';
+            }, 5000);
+
+            updateLocationTag(data.room || "Corridor");
             
             // Make robot point at panel while explaining
             if (data.type !== "classroom_entry" && data.type !== "corridor_exit") {
@@ -441,7 +567,9 @@
             }
         }
         
+        let currentMoveRAF = null;
         function moveRobotToWaypoint(index, onComplete) {
+            if (currentMoveRAF) cancelAnimationFrame(currentMoveRAF);
             if (index >= waypoints.length) return;
             const wp = waypoints[index];
             const targetPos = new THREE.Vector3(wp.robotPos.x, 0, wp.robotPos.z);
@@ -470,7 +598,7 @@
                 robotGroup.position.y = bob;
                 
                 if (t < 1) {
-                    requestAnimationFrame(animateMove);
+                    currentMoveRAF = requestAnimationFrame(animateMove);
                 } else {
                     robotGroup.position.copy(targetPos);
                     robotGroup.position.y = 0;
@@ -479,21 +607,16 @@
                     robotGroup.rotation.y = targetAngle;
                     isRobotMoving = false;
                     isWalking = false;
+                    currentMoveRAF = null;
                     
                     // Reset arm positions
                     robotParts.leftArm.rotation.z = 0;
                     robotParts.rightArm.rotation.z = 0;
                     
-                    if (wp.type !== "corridor_exit" && wp.type !== "classroom_entry") {
-                        showPanelInfo(wp);
-                    } else {
-                        updateLocationTag(wp.room);
-                        tourStatusSpan.innerHTML = `🤖 ${wp.type === "classroom_entry" ? "Entering classroom..." : "Returning to corridor..."}`;
-                    }
                     if (onComplete) onComplete();
                 }
             }
-            requestAnimationFrame(animateMove);
+            currentMoveRAF = requestAnimationFrame(animateMove);
         }
         
         function visitWaypoint(index) {
@@ -504,10 +627,20 @@
                 return;
             }
             currentWaypointIndex = index;
+            updateCounter();
+            seekBar.value = waypoints.length > 1
+                ? (currentWaypointIndex / (waypoints.length - 1)) * 100
+                : 0;
             const wp = waypoints[index];
             tourStatusSpan.innerHTML = `🤖 Walking to: ${wp.title.substring(0, 35)}`;
             
             moveRobotToWaypoint(index, () => {
+                if (wp.type !== "corridor_exit" && wp.type !== "classroom_entry") {
+                    showPanelInfo(wp);
+                } else {
+                    updateLocationTag(wp.room);
+                    tourStatusSpan.innerHTML = `🤖 ${wp.type === "classroom_entry" ? "Entering classroom..." : "Returning to corridor..."}`;
+                }
                 const stayTime = (wp.type === "corridor_exit" || wp.type === "classroom_entry") ? 2000 : perPanelStayDuration;
                 tourTimeout = setTimeout(() => {
                     if (isAutoTourActive && !isPaused) visitWaypoint(index + 1);
@@ -549,12 +682,25 @@
         
         function seekToPosition(value) {
             const percent = value / 100;
-            const index = Math.floor(percent * waypoints.length);
+            const index = Math.min(
+                waypoints.length - 1,
+                Math.max(0, Math.floor(percent * waypoints.length))
+            );
             if (index >= 0 && index < waypoints.length) {
                 if (tourTimeout) clearTimeout(tourTimeout);
                 currentWaypointIndex = index;
+                updateCounter();
+                updatePrevNextButtons();
+                const wp = waypoints[index];
+                tourStatusSpan.innerHTML = `Moving to ${wp.title}`;
+                
                 moveRobotToWaypoint(index, () => {
-                    if (waypoints[index].type !== "corridor_exit") showPanelInfo(waypoints[index]);
+                    if (wp.type !== "corridor_exit" && wp.type !== "classroom_entry") {
+                        showPanelInfo(wp);
+                    } else {
+                        updateLocationTag(wp.room);
+                        tourStatusSpan.innerHTML = `🤖 ${wp.type === "classroom_entry" ? "Entering classroom..." : "Returning to corridor..."}`;
+                    }
                     if (isAutoTourActive && !isPaused) {
                         tourTimeout = setTimeout(() => visitWaypoint(index + 1), perPanelStayDuration);
                     }
@@ -564,7 +710,7 @@
         
         // Camera follow (third-person behind robot)
         function updateCameraFollow() {
-            if (!isAutoTourActive) return;
+            if (!isRobotMoving && !isAutoTourActive) return;
             const robotPos = robotGroup.position;
             const robotAngle = robotGroup.rotation.y;
             // Camera offset based on robot's facing direction
@@ -580,13 +726,7 @@
             controls.update();
         }
         
-        function followLoop() {
-            if (isAutoTourActive && !isPaused) updateCameraFollow();
-            requestAnimationFrame(followLoop);
-        }
-        followLoop();
-        
-        // Animation loop for walking
+        // Animation loop for walking and camera
         let lastTime = performance.now();
         function animationLoop() {
             const now = performance.now();
@@ -594,6 +734,7 @@
             lastTime = now;
             
             updateWalkingAnimation(delta);
+            updateCameraFollow();
             
             // Blinking eyes
             if (Math.random() < 0.005) {
@@ -609,9 +750,38 @@
             labelRenderer.render(scene, camera);
             requestAnimationFrame(animationLoop);
         }
-        animationLoop();
+        async function init() {
+            try {
+                document.getElementById("loading").style.display = "block";
+
+                const apiData = await fetchTimelineData();
+                waypoints = normalizeTimelineData(apiData);
+
+                scaleSceneForData();
+                createPanelsFromWaypoints();
+
+                if (waypoints.length > 0) {
+                    const first = waypoints[0];
+                    robotGroup.position.set(first.robotPos.x, 0, first.robotPos.z);
+                    currentWaypointIndex = 0;
+                }
+
+                document.getElementById("loading").style.display = "none";
+                updatePrevNextButtons();
+                updateCounter();
+                seekBar.value = 0;
+                animationLoop();
+            } catch (error) {
+                console.error(error);
+                document.getElementById("loading").innerHTML = "Failed to load timeline data";
+            }
+        }
+
+        init();
         
         // Event listeners
+        prevBtn.addEventListener("click", () => goToWaypoint(currentWaypointIndex - 1));
+        nextBtn.addEventListener("click", () => goToWaypoint(currentWaypointIndex + 1));
         startBtn.addEventListener('click', startAutoTour);
         pauseBtn.addEventListener('click', pauseAutoTour);
         resumeBtn.addEventListener('click', resumeAutoTour);
@@ -633,7 +803,7 @@
                     showPanelInfo(data);
                     if (!isAutoTourActive) {
                         const idx = waypoints.findIndex(w => w.id === data.id);
-                        if (idx !== -1) moveRobotToWaypoint(idx, () => {});
+                        if (idx !== -1) goToWaypoint(idx);
                     }
                 }
             }
