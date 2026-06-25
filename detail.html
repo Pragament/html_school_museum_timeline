@@ -136,6 +136,18 @@
             overflow: hidden;
         }
 
+        @keyframes kenburns {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+            50% {
+                transform: scale(1.12) translate(-2%, -1%);
+            }
+            100% {
+                transform: scale(1) translate(0, 0);
+            }
+        }
+
         .event-image {
             width: 100%;
             height: 100%;
@@ -143,11 +155,12 @@
             position: absolute;
             top: 0;
             left: 0;
+            animation: kenburns 20s infinite ease-in-out;
             transition: transform 0.8s ease;
         }
 
         .image-side:hover .event-image {
-            transform: scale(1.05);
+            transform: scale(1.18);
         }
 
         .image-overlay {
@@ -361,6 +374,121 @@
             transform: translateY(-2px);
         }
 
+        /* QR Code Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-card {
+            background: rgba(30, 30, 60, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            color: #ffffff;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .modal-overlay.show .modal-card {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #b0bec5;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: #ff9800;
+        }
+        .modal-card h3 {
+            margin-top: 0;
+            color: #ff9800;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .modal-card p {
+            color: #b0bec5;
+            font-size: 13px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        #qrcode-container {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        #qrcode img {
+            display: block;
+        }
+        .modal-btn {
+            background: #ff9800;
+            color: #1a1a2e;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .modal-btn:hover {
+            background: #e68a00;
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+            color: #1a1a2e;
+        }
+
+        /* QR Button Styles */
+        .qr-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .qr-btn:hover {
+            background: #ff9800;
+            color: #1a1a2e;
+            border-color: #ff9800;
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
+        }
+
         .loading-screen, .error-screen {
             text-align: center;
             padding: 80px 20px;
@@ -398,6 +526,8 @@
             margin-bottom: 25px;
         }
     </style>
+    <!-- QRCode.js Library -->
+    <script src="qrcode.min.js"></script>
 </head>
 <body>
 
@@ -583,6 +713,10 @@
                                 🔗 Share
                             </button>
                             
+                            <button class="qr-btn" onclick="showQrModal()">
+                                📱 QR Code
+                            </button>
+                            
                             <a href="${nextEvent ? 'detail.html?id=' + nextEvent.id : '#'}" 
                                class="nav-link ${nextEvent ? '' : 'disabled'}" 
                                title="${nextEvent ? nextEvent.title : ''}">
@@ -625,7 +759,51 @@
             return (yiq >= 128) ? '#1a1a2e' : '#ffffff';
         }
 
+        let qrCodeInstance = null;
+
+        function showQrModal() {
+            const overlay = document.getElementById("qrModal");
+            overlay.classList.add("show");
+            
+            // Generate QR Code if not already initialized
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = ""; // Clear any previous
+            
+            qrCodeInstance = new QRCode(qrContainer, {
+                text: window.location.href,
+                width: 180,
+                height: 180,
+                colorDark: "#1a1a2e",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        function hideQrModal() {
+            const overlay = document.getElementById("qrModal");
+            overlay.classList.remove("show");
+        }
+
+        function closeQrModal(event) {
+            if (event.target.id === "qrModal") {
+                hideQrModal();
+            }
+        }
+
         initPage();
     </script>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="modal-overlay" onclick="closeQrModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="hideQrModal()">&times;</span>
+            <h3>📱 Scan QR Code</h3>
+            <p>Scan this QR code to view this historical entry on your mobile device!</p>
+            <div id="qrcode-container">
+                <div id="qrcode"></div>
+            </div>
+            <button class="modal-btn" onclick="hideQrModal()">Close</button>
+        </div>
+    </div>
 </body>
 </html>
