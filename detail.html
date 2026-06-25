@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details | CBSE History Museum</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #1a1a3e, #24243e);
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mode-toggle-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            z-index: 1000;
+            border-bottom: 2px solid #ff9800;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #ff9800;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .mode-btn {
+            background: #333;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn:hover {
+            background: #ffb74d;
+            color: #1a1a2e;
+        }
+
+        .container {
+            flex: 1;
+            padding: 100px 20px 40px;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .back-btn-container {
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 152, 0, 0.15);
+            border: 1px solid #ff9800;
+            color: #ff9800;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #ff9800;
+            color: #1a1a2e;
+            transform: translateX(-3px);
+        }
+
+        .detail-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            min-height: 550px;
+        }
+
+        @media (max-width: 900px) {
+            .detail-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .image-side {
+            position: relative;
+            min-height: 350px;
+            overflow: hidden;
+        }
+
+        .event-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.8s ease;
+        }
+
+        .image-side:hover .event-image {
+            transform: scale(1.05);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            pointer-events: none;
+        }
+
+        .ai-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(45deg, #9c27b0, #e91e63);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .content-side {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 600px) {
+            .content-side {
+                padding: 25px;
+            }
+        }
+
+        .event-meta {
+            margin-bottom: 25px;
+        }
+
+        .year-era-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .year-badge {
+            background: #ff9800;
+            color: #1a1a2e;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .era-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #ccc;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .event-title {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            background: linear-gradient(to right, #ffffff, #ffe0b2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .event-subtitle {
+            font-size: 14px;
+            color: #b0bec5;
+            line-height: 1.5;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .event-details-body {
+            flex-grow: 1;
+            margin-bottom: 30px;
+        }
+
+        .section-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #ff9800;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .section-box h4 {
+            color: #ffb74d;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 500px) {
+            .badges-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .badge-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .badge-card .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #90a4ae;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-card .val {
+            font-size: 13px;
+            font-weight: 600;
+            color: #eceff1;
+        }
+
+        .page-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 25px;
+            margin-top: auto;
+        }
+
+        .nav-link {
+            flex: 1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover:not(.disabled) {
+            background: rgba(255, 152, 0, 0.1);
+            border-color: #ff9800;
+            color: #ff9800;
+        }
+
+        .nav-link.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .share-btn {
+            background: #ff9800;
+            border: none;
+            color: #1a1a2e;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .share-btn:hover {
+            background: #ffb74d;
+            transform: translateY(-2px);
+        }
+
+        .loading-screen, .error-screen {
+            text-align: center;
+            padding: 80px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border-left-color: #ff9800;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-screen h2 {
+            color: #f44336;
+            margin-bottom: 15px;
+        }
+
+        .error-screen p {
+            color: #b0bec5;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mode-toggle-bar">
+        <div class="logo">🏛️ CBSE HISTORY MUSEUM <span>Event Explorer</span></div>
+        <div class="mode-buttons">
+            <a href="index.html" class="mode-btn">📅 TIMELINE VIEW</a>
+            <a href="3d.html" class="mode-btn">🎮 3D TOUR</a>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="back-btn-container">
+            <a href="index.html" class="back-btn">← Back to Timeline</a>
+        </div>
+
+        <div id="mainContainer">
+            <!-- Loading state -->
+            <div class="loading-screen">
+                <div class="spinner"></div>
+                <p>Loading historical event details...</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const EVENTS_JSON_URL = "events_data.json";
+
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "\"": "&quot;",
+                "'": "&#39;"
+            }[char]));
+        }
+
+        async function initPage() {
+            const mainContainer = document.getElementById("mainContainer");
+            
+            // Get event ID from URL query params
+            const urlParams = new URLSearchParams(window.location.search);
+            const idParam = urlParams.get('id') || urlParams.get('event');
+            
+            if (!idParam) {
+                renderError("No Event Specified", "Please choose an event from the timeline first.");
+                return;
+            }
+
+            const targetId = parseInt(idParam, 10);
+            if (isNaN(targetId)) {
+                renderError("Invalid Event ID", "The specified event ID is invalid.");
+                return;
+            }
+
+            try {
+                const response = await fetch(EVENTS_JSON_URL, { cache: "no-store" });
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${EVENTS_JSON_URL} status ${response.status}`);
+                }
+
+                const allTopics = await response.json();
+                const currentEventIndex = allTopics.findIndex(e => e.id === targetId);
+
+                if (currentEventIndex === -1) {
+                    renderError("Event Not Found", `Could not find historical event with ID ${targetId}.`);
+                    return;
+                }
+
+                const event = allTopics[currentEventIndex];
+                
+                // Update Page Title
+                document.title = `${event.year ? event.year + ' - ' : ''}${event.title} | CBSE History Museum`;
+
+                // Determine Prev and Next event IDs
+                const prevEvent = currentEventIndex > 0 ? allTopics[currentEventIndex - 1] : null;
+                const nextEvent = currentEventIndex < allTopics.length - 1 ? allTopics[currentEventIndex + 1] : null;
+
+                renderEvent(event, prevEvent, nextEvent);
+
+            } catch (err) {
+                console.error("Error loading event:", err);
+                renderError("Load Failure", "Failed to retrieve the timeline content. Please check your internet connection.");
+            }
+        }
+
+        function renderError(title, message) {
+            const mainContainer = document.getElementById("mainContainer");
+            mainContainer.innerHTML = `
+                <div class="error-screen">
+                    <h2>⚠️ ${escapeHtml(title)}</h2>
+                    <p>${escapeHtml(message)}</p>
+                    <a href="index.html" class="back-btn" style="border-radius: 12px;">Return to Timeline</a>
+                </div>
+            `;
+        }
+
+        function renderEvent(event, prevEvent, nextEvent) {
+            const mainContainer = document.getElementById("mainContainer");
+            
+            // Format Cause & Effect HTML
+            let causeEffectHtml = "";
+            if (event.cause_effect && event.cause_effect !== "Cause & effect details not available.") {
+                const parts = event.cause_effect.split("Effect:");
+                if (parts.length === 2) {
+                    const causeText = parts[0].replace("Cause:", "").trim();
+                    const effectText = parts[1].trim();
+                    
+                    causeEffectHtml = `
+                        <div class="section-box" style="border-left-color: ${event.color};">
+                            <h4>🔥 Cause</h4>
+                            <p>${escapeHtml(causeText)}</p>
+                        </div>
+                        <div class="section-box" style="border-left-color: ${event.color};">
+                            <h4>⚡ Effect / Consequence</h4>
+                            <p>${escapeHtml(effectText)}</p>
+                        </div>
+                    `;
+                } else {
+                    causeEffectHtml = `
+                        <div class="section-box" style="border-left-color: ${event.color};">
+                            <h4>📖 Cause & Effect Detail</h4>
+                            <p>${escapeHtml(event.cause_effect)}</p>
+                        </div>
+                    `;
+                }
+            } else {
+                causeEffectHtml = `
+                    <div class="section-box" style="border-left-color: ${event.color}; border-left-style: dashed;">
+                        <h4 style="color: #90a4ae;">📖 Timeline Entry</h4>
+                        <p style="color: #b0bec5; font-style: italic;">No specific cause & effect relationship is documented for this event.</p>
+                    </div>
+                `;
+            }
+
+            mainContainer.innerHTML = `
+                <div class="detail-card">
+                    <div class="image-side">
+                        <img class="event-image" src="${event.image}" alt="${escapeHtml(event.title)}">
+                        <div class="image-overlay"></div>
+                    </div>
+                    
+                    <div class="content-side">
+                        <div class="event-meta">
+                            <div class="year-era-row">
+                                <span class="year-badge" style="background-color: ${event.color}; color: ${getContrastColor(event.color)};">📅 ${escapeHtml(event.year)}</span>
+                                <span class="era-badge">${escapeHtml(event.era)}</span>
+                            </div>
+                            <h2 class="event-title">${escapeHtml(event.title)}</h2>
+                            <p class="event-subtitle">${escapeHtml(event.subtitle)}</p>
+                        </div>
+                        
+                        <div class="event-details-body">
+                            ${causeEffectHtml}
+                            
+                            <div class="badges-grid">
+                                <div class="badge-card">
+                                    <span class="label">🎓 Grade Level</span>
+                                    <span class="val" style="color: ${event.color};">${escapeHtml(event.grade)}</span>
+                                </div>
+                                <div class="badge-card">
+                                    <span class="label">📍 Location</span>
+                                    <span class="val">${escapeHtml(event.location)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="page-navigation">
+                            <a href="${prevEvent ? 'detail.html?id=' + prevEvent.id : '#'}" 
+                               class="nav-link ${prevEvent ? '' : 'disabled'}" 
+                               title="${prevEvent ? prevEvent.title : ''}">
+                               ⏮ Previous
+                            </a>
+                            
+                            <button class="share-btn" onclick="copyShareLink()">
+                                🔗 Share
+                            </button>
+                            
+                            <a href="${nextEvent ? 'detail.html?id=' + nextEvent.id : '#'}" 
+                               class="nav-link ${nextEvent ? '' : 'disabled'}" 
+                               title="${nextEvent ? nextEvent.title : ''}">
+                               Next ⏭
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function copyShareLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                const btn = document.querySelector('.share-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Copied!';
+                btn.style.background = '#4caf50';
+                btn.style.color = 'white';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '#ff9800';
+                    btn.style.color = '#1a1a2e';
+                }, 2000);
+            }).catch(err => {
+                console.error("Could not copy link:", err);
+            });
+        }
+
+        // Helper to determine text contrast color for the year badge
+        function getContrastColor(hexColor) {
+            const hex = hexColor.replace('#', '');
+            if (hex.length !== 6) return '#1a1a2e';
+            
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            
+            const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+            return (yiq >= 128) ? '#1a1a2e' : '#ffffff';
+        }
+
+        initPage();
+    </script>
+</body>
+</html>
