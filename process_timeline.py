@@ -28,13 +28,13 @@ GRADE_COLORS = {
     "Grade 10": "#e91e63"
 }
 
-# The 5 custom AI images generated from content-based prompts
+# The 5 custom AI images generated from content-based prompts (now motion GIFs)
 CUSTOM_IMAGES = {
-    10: ("images/discovery_of_fire.png", True),
-    13: ("images/bhimbetka_cave_art.png", True),
-    14: ("images/invention_of_wheel.png", True),
-    19: ("images/great_bath_mohenjodaro.png", True),
-    55: ("images/gutenberg_press.png", True)
+    10: ("images/discovery_of_fire.gif", True),
+    13: ("images/bhimbetka_cave_art.gif", True),
+    14: ("images/invention_of_wheel.gif", True),
+    19: ("images/great_bath_mohenjodaro.gif", True),
+    55: ("images/gutenberg_press.gif", True)
 }
 
 GIF_URLS = {
@@ -111,8 +111,14 @@ def main():
             if event_id in CUSTOM_IMAGES:
                 img_src, is_ai = CUSTOM_IMAGES[event_id]
             else:
-                img_src = "images/history_fallback.gif"
-                is_ai = False
+                # Check if a custom generated event GIF exists
+                custom_gif = f"images/event_{event_id}.gif"
+                if os.path.exists(custom_gif):
+                    img_src = custom_gif
+                    is_ai = True
+                else:
+                    img_src = "images/history_fallback.gif"
+                    is_ai = False
             
             event = {
                 "id": event_id,

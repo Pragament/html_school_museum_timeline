@@ -9,8 +9,8 @@
         "location": "Corridor (Introduction Panel)",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_1.gif",
+        "is_ai_image": true
     },
     {
         "id": 2,
@@ -22,8 +22,8 @@
         "location": "Classroom 6A (Details)",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_2.gif",
+        "is_ai_image": true
     },
     {
         "id": 3,
@@ -35,8 +35,8 @@
         "location": "Corridor",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_3.gif",
+        "is_ai_image": true
     },
     {
         "id": 4,
@@ -48,8 +48,8 @@
         "location": "Classroom 6A",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_4.gif",
+        "is_ai_image": true
     },
     {
         "id": 5,
@@ -61,8 +61,8 @@
         "location": "Classroom 6A",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_5.gif",
+        "is_ai_image": true
     },
     {
         "id": 6,
@@ -74,8 +74,8 @@
         "location": "Classroom 6A",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_6.gif",
+        "is_ai_image": true
     },
     {
         "id": 7,
@@ -87,8 +87,8 @@
         "location": "Classroom 6A",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_7.gif",
+        "is_ai_image": true
     },
     {
         "id": 8,
@@ -100,8 +100,8 @@
         "location": "Classroom 6A",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_8.gif",
+        "is_ai_image": true
     },
     {
         "id": 9,
@@ -113,8 +113,8 @@
         "location": "Classroom 6A",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_9.gif",
+        "is_ai_image": true
     },
     {
         "id": 10,
@@ -126,7 +126,7 @@
         "location": "Corridor",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/discovery_of_fire.png",
+        "image": "images/discovery_of_fire.gif",
         "is_ai_image": true
     },
     {
@@ -139,8 +139,8 @@
         "location": "Corridor",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_11.gif",
+        "is_ai_image": true
     },
     {
         "id": 12,
@@ -152,8 +152,8 @@
         "location": "Corridor",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_12.gif",
+        "is_ai_image": true
     },
     {
         "id": 13,
@@ -165,7 +165,7 @@
         "location": "Classroom 6B (Details)",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/bhimbetka_cave_art.png",
+        "image": "images/bhimbetka_cave_art.gif",
         "is_ai_image": true
     },
     {
@@ -178,7 +178,7 @@
         "location": "Classroom 6B",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/invention_of_wheel.png",
+        "image": "images/invention_of_wheel.gif",
         "is_ai_image": true
     },
     {
@@ -191,8 +191,8 @@
         "location": "Corridor",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_15.gif",
+        "is_ai_image": true
     },
     {
         "id": 16,
@@ -204,8 +204,8 @@
         "location": "Classroom 6C (Details)",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_16.gif",
+        "is_ai_image": true
     },
     {
         "id": 17,
@@ -217,8 +217,8 @@
         "location": "Classroom 6C",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_17.gif",
+        "is_ai_image": true
     },
     {
         "id": 18,
@@ -230,8 +230,8 @@
         "location": "Corridor",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_18.gif",
+        "is_ai_image": true
     },
     {
         "id": 19,
@@ -243,7 +243,7 @@
         "location": "Classroom 6C",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/great_bath_mohenjodaro.png",
+        "image": "images/great_bath_mohenjodaro.gif",
         "is_ai_image": true
     },
     {
@@ -256,8 +256,8 @@
         "location": "Corridor",
         "grade": "Grade 6",
         "color": "#4caf50",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_20.gif",
+        "is_ai_image": true
     },
     {
         "id": 21,
@@ -269,8 +269,8 @@
         "location": "Corridor",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_21.gif",
+        "is_ai_image": true
     },
     {
         "id": 22,
@@ -282,8 +282,8 @@
         "location": "Classroom 10A (Details)",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_22.gif",
+        "is_ai_image": true
     },
     {
         "id": 23,
@@ -295,8 +295,8 @@
         "location": "Corridor",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_23.gif",
+        "is_ai_image": true
     },
     {
         "id": 24,
@@ -308,8 +308,8 @@
         "location": "Corridor",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_24.gif",
+        "is_ai_image": true
     },
     {
         "id": 25,
@@ -321,8 +321,8 @@
         "location": "Classroom 7A (Details)",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_25.gif",
+        "is_ai_image": true
     },
     {
         "id": 26,
@@ -334,8 +334,8 @@
         "location": "Classroom 7A",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_26.gif",
+        "is_ai_image": true
     },
     {
         "id": 27,
@@ -347,8 +347,8 @@
         "location": "Classroom 7B (Details)",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_27.gif",
+        "is_ai_image": true
     },
     {
         "id": 28,
@@ -360,8 +360,8 @@
         "location": "Classroom 7A",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_28.gif",
+        "is_ai_image": true
     },
     {
         "id": 29,
@@ -373,8 +373,8 @@
         "location": "Classroom 7A",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_29.gif",
+        "is_ai_image": true
     },
     {
         "id": 30,
@@ -386,8 +386,8 @@
         "location": "Classroom 7B",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_30.gif",
+        "is_ai_image": true
     },
     {
         "id": 31,
@@ -399,8 +399,8 @@
         "location": "Corridor",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_31.gif",
+        "is_ai_image": true
     },
     {
         "id": 32,
@@ -412,8 +412,8 @@
         "location": "Corridor",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_32.gif",
+        "is_ai_image": true
     },
     {
         "id": 33,
@@ -425,8 +425,8 @@
         "location": "Classroom 7A",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_33.gif",
+        "is_ai_image": true
     },
     {
         "id": 34,
@@ -438,8 +438,8 @@
         "location": "Classroom 7A",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_34.gif",
+        "is_ai_image": true
     },
     {
         "id": 35,
@@ -451,8 +451,8 @@
         "location": "Classroom 7C (Details)",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_35.gif",
+        "is_ai_image": true
     },
     {
         "id": 36,
@@ -464,8 +464,8 @@
         "location": "Classroom 7C",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_36.gif",
+        "is_ai_image": true
     },
     {
         "id": 37,
@@ -477,8 +477,8 @@
         "location": "Classroom 7C",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_37.gif",
+        "is_ai_image": true
     },
     {
         "id": 38,
@@ -490,8 +490,8 @@
         "location": "Classroom 7C",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_38.gif",
+        "is_ai_image": true
     },
     {
         "id": 39,
@@ -503,8 +503,8 @@
         "location": "Classroom 7C",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_39.gif",
+        "is_ai_image": true
     },
     {
         "id": 40,
@@ -516,8 +516,8 @@
         "location": "Classroom 7C",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_40.gif",
+        "is_ai_image": true
     },
     {
         "id": 41,
@@ -529,8 +529,8 @@
         "location": "Classroom 7C",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_41.gif",
+        "is_ai_image": true
     },
     {
         "id": 42,
@@ -542,8 +542,8 @@
         "location": "Classroom 7D (Details)",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_42.gif",
+        "is_ai_image": true
     },
     {
         "id": 43,
@@ -555,8 +555,8 @@
         "location": "Classroom 7D",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_43.gif",
+        "is_ai_image": true
     },
     {
         "id": 44,
@@ -568,8 +568,8 @@
         "location": "Classroom 7D",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_44.gif",
+        "is_ai_image": true
     },
     {
         "id": 45,
@@ -581,8 +581,8 @@
         "location": "Classroom 7A",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_45.gif",
+        "is_ai_image": true
     },
     {
         "id": 46,
@@ -594,8 +594,8 @@
         "location": "Classroom 7E (Details)",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_46.gif",
+        "is_ai_image": true
     },
     {
         "id": 47,
@@ -607,8 +607,8 @@
         "location": "Classroom 7D",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_47.gif",
+        "is_ai_image": true
     },
     {
         "id": 48,
@@ -620,8 +620,8 @@
         "location": "Classroom 7C",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_48.gif",
+        "is_ai_image": true
     },
     {
         "id": 49,
@@ -633,8 +633,8 @@
         "location": "Classroom 7E",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_49.gif",
+        "is_ai_image": true
     },
     {
         "id": 50,
@@ -646,8 +646,8 @@
         "location": "Classroom 7B",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_50.gif",
+        "is_ai_image": true
     },
     {
         "id": 51,
@@ -659,8 +659,8 @@
         "location": "Classroom 10A",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_51.gif",
+        "is_ai_image": true
     },
     {
         "id": 52,
@@ -672,8 +672,8 @@
         "location": "Corridor",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_52.gif",
+        "is_ai_image": true
     },
     {
         "id": 53,
@@ -685,8 +685,8 @@
         "location": "Corridor",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_53.gif",
+        "is_ai_image": true
     },
     {
         "id": 54,
@@ -698,8 +698,8 @@
         "location": "Classroom 7E",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_54.gif",
+        "is_ai_image": true
     },
     {
         "id": 55,
@@ -711,7 +711,7 @@
         "location": "Corridor",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/gutenberg_press.png",
+        "image": "images/gutenberg_press.gif",
         "is_ai_image": true
     },
     {
@@ -724,8 +724,8 @@
         "location": "Classroom 10B (Details)",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_56.gif",
+        "is_ai_image": true
     },
     {
         "id": 57,
@@ -737,8 +737,8 @@
         "location": "Classroom 7E",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_57.gif",
+        "is_ai_image": true
     },
     {
         "id": 58,
@@ -750,8 +750,8 @@
         "location": "Corridor",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_58.gif",
+        "is_ai_image": true
     },
     {
         "id": 59,
@@ -763,8 +763,8 @@
         "location": "Classroom 7E",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_59.gif",
+        "is_ai_image": true
     },
     {
         "id": 60,
@@ -776,8 +776,8 @@
         "location": "Classroom 7B",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_60.gif",
+        "is_ai_image": true
     },
     {
         "id": 61,
@@ -789,8 +789,8 @@
         "location": "Classroom 7B",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_61.gif",
+        "is_ai_image": true
     },
     {
         "id": 62,
@@ -802,8 +802,8 @@
         "location": "Classroom 10B",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_62.gif",
+        "is_ai_image": true
     },
     {
         "id": 63,
@@ -815,8 +815,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_63.gif",
+        "is_ai_image": true
     },
     {
         "id": 64,
@@ -828,8 +828,8 @@
         "location": "Classroom 8A (Details)",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_64.gif",
+        "is_ai_image": true
     },
     {
         "id": 65,
@@ -841,8 +841,8 @@
         "location": "Classroom 7E",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_65.gif",
+        "is_ai_image": true
     },
     {
         "id": 66,
@@ -854,8 +854,8 @@
         "location": "Classroom 7E",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_66.gif",
+        "is_ai_image": true
     },
     {
         "id": 67,
@@ -867,8 +867,8 @@
         "location": "Classroom 7B",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_67.gif",
+        "is_ai_image": true
     },
     {
         "id": 68,
@@ -880,8 +880,8 @@
         "location": "Classroom 7A",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_68.gif",
+        "is_ai_image": true
     },
     {
         "id": 69,
@@ -893,8 +893,8 @@
         "location": "Classroom 7E",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_69.gif",
+        "is_ai_image": true
     },
     {
         "id": 70,
@@ -906,8 +906,8 @@
         "location": "Classroom 7F (Details)",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_70.gif",
+        "is_ai_image": true
     },
     {
         "id": 71,
@@ -919,8 +919,8 @@
         "location": "Classroom 7F",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_71.gif",
+        "is_ai_image": true
     },
     {
         "id": 72,
@@ -932,8 +932,8 @@
         "location": "Classroom 7F",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_72.gif",
+        "is_ai_image": true
     },
     {
         "id": 73,
@@ -945,8 +945,8 @@
         "location": "Classroom 7F",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_73.gif",
+        "is_ai_image": true
     },
     {
         "id": 74,
@@ -958,8 +958,8 @@
         "location": "Classroom 7F",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_74.gif",
+        "is_ai_image": true
     },
     {
         "id": 75,
@@ -971,8 +971,8 @@
         "location": "Corridor",
         "grade": "Grade 7",
         "color": "#ff9800",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_75.gif",
+        "is_ai_image": true
     },
     {
         "id": 76,
@@ -984,8 +984,8 @@
         "location": "Classroom 8B (Details)",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_76.gif",
+        "is_ai_image": true
     },
     {
         "id": 77,
@@ -997,8 +997,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_77.gif",
+        "is_ai_image": true
     },
     {
         "id": 78,
@@ -1010,8 +1010,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_78.gif",
+        "is_ai_image": true
     },
     {
         "id": 79,
@@ -1023,8 +1023,8 @@
         "location": "Classroom 8B",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_79.gif",
+        "is_ai_image": true
     },
     {
         "id": 80,
@@ -1036,8 +1036,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_80.gif",
+        "is_ai_image": true
     },
     {
         "id": 81,
@@ -1049,8 +1049,8 @@
         "location": "Classroom 8A",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_81.gif",
+        "is_ai_image": true
     },
     {
         "id": 82,
@@ -1062,8 +1062,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_82.gif",
+        "is_ai_image": true
     },
     {
         "id": 83,
@@ -1075,8 +1075,8 @@
         "location": "Classroom 10B",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_83.gif",
+        "is_ai_image": true
     },
     {
         "id": 84,
@@ -1088,8 +1088,8 @@
         "location": "Classroom 10B",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_84.gif",
+        "is_ai_image": true
     },
     {
         "id": 85,
@@ -1101,8 +1101,8 @@
         "location": "Classroom 8B",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_85.gif",
+        "is_ai_image": true
     },
     {
         "id": 86,
@@ -1114,8 +1114,8 @@
         "location": "Classroom 10B",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_86.gif",
+        "is_ai_image": true
     },
     {
         "id": 87,
@@ -1127,8 +1127,8 @@
         "location": "Classroom 8C (Details)",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_87.gif",
+        "is_ai_image": true
     },
     {
         "id": 88,
@@ -1140,8 +1140,8 @@
         "location": "Classroom 8C",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_88.gif",
+        "is_ai_image": true
     },
     {
         "id": 89,
@@ -1153,8 +1153,8 @@
         "location": "Classroom 8B",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_89.gif",
+        "is_ai_image": true
     },
     {
         "id": 90,
@@ -1166,8 +1166,8 @@
         "location": "Classroom 8A",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_90.gif",
+        "is_ai_image": true
     },
     {
         "id": 91,
@@ -1179,8 +1179,8 @@
         "location": "Classroom 8A",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_91.gif",
+        "is_ai_image": true
     },
     {
         "id": 92,
@@ -1192,8 +1192,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_92.gif",
+        "is_ai_image": true
     },
     {
         "id": 93,
@@ -1205,8 +1205,8 @@
         "location": "Classroom 8D (Details)",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_93.gif",
+        "is_ai_image": true
     },
     {
         "id": 94,
@@ -1218,8 +1218,8 @@
         "location": "Classroom 8B",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_94.gif",
+        "is_ai_image": true
     },
     {
         "id": 95,
@@ -1231,8 +1231,8 @@
         "location": "Classroom 8E (Details)",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_95.gif",
+        "is_ai_image": true
     },
     {
         "id": 96,
@@ -1244,8 +1244,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_96.gif",
+        "is_ai_image": true
     },
     {
         "id": 97,
@@ -1257,8 +1257,8 @@
         "location": "Classroom 8B",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_97.gif",
+        "is_ai_image": true
     },
     {
         "id": 98,
@@ -1270,8 +1270,8 @@
         "location": "Classroom 8F (Details)",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_98.gif",
+        "is_ai_image": true
     },
     {
         "id": 99,
@@ -1283,8 +1283,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_99.gif",
+        "is_ai_image": true
     },
     {
         "id": 100,
@@ -1296,8 +1296,8 @@
         "location": "Classroom 8F",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_100.gif",
+        "is_ai_image": true
     },
     {
         "id": 101,
@@ -1309,8 +1309,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_101.gif",
+        "is_ai_image": true
     },
     {
         "id": 102,
@@ -1322,8 +1322,8 @@
         "location": "Classroom 8E",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_102.gif",
+        "is_ai_image": true
     },
     {
         "id": 103,
@@ -1335,8 +1335,8 @@
         "location": "Classroom 10C (Details)",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_103.gif",
+        "is_ai_image": true
     },
     {
         "id": 104,
@@ -1348,8 +1348,8 @@
         "location": "Classroom 10C",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_104.gif",
+        "is_ai_image": true
     },
     {
         "id": 105,
@@ -1361,8 +1361,8 @@
         "location": "Classroom 8D",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_105.gif",
+        "is_ai_image": true
     },
     {
         "id": 106,
@@ -1374,8 +1374,8 @@
         "location": "Classroom 10B",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_106.gif",
+        "is_ai_image": true
     },
     {
         "id": 107,
@@ -1387,8 +1387,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_107.gif",
+        "is_ai_image": true
     },
     {
         "id": 108,
@@ -1400,8 +1400,8 @@
         "location": "Classroom 9A (Details)",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_108.gif",
+        "is_ai_image": true
     },
     {
         "id": 109,
@@ -1413,8 +1413,8 @@
         "location": "Classroom 8B",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_109.gif",
+        "is_ai_image": true
     },
     {
         "id": 110,
@@ -1426,8 +1426,8 @@
         "location": "Classroom 8D",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_110.gif",
+        "is_ai_image": true
     },
     {
         "id": 111,
@@ -1439,8 +1439,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_111.gif",
+        "is_ai_image": true
     },
     {
         "id": 112,
@@ -1452,8 +1452,8 @@
         "location": "Classroom 9B (Details)",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_112.gif",
+        "is_ai_image": true
     },
     {
         "id": 113,
@@ -1465,8 +1465,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_113.gif",
+        "is_ai_image": true
     },
     {
         "id": 114,
@@ -1478,8 +1478,8 @@
         "location": "Classroom 8G (Details)",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_114.gif",
+        "is_ai_image": true
     },
     {
         "id": 115,
@@ -1491,8 +1491,8 @@
         "location": "Classroom 9B",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_115.gif",
+        "is_ai_image": true
     },
     {
         "id": 116,
@@ -1504,8 +1504,8 @@
         "location": "Classroom 8E",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_116.gif",
+        "is_ai_image": true
     },
     {
         "id": 117,
@@ -1517,8 +1517,8 @@
         "location": "Classroom 9A",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_117.gif",
+        "is_ai_image": true
     },
     {
         "id": 118,
@@ -1530,8 +1530,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_118.gif",
+        "is_ai_image": true
     },
     {
         "id": 119,
@@ -1543,8 +1543,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_119.gif",
+        "is_ai_image": true
     },
     {
         "id": 120,
@@ -1556,8 +1556,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_120.gif",
+        "is_ai_image": true
     },
     {
         "id": 121,
@@ -1569,8 +1569,8 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_121.gif",
+        "is_ai_image": true
     },
     {
         "id": 122,
@@ -1582,8 +1582,8 @@
         "location": "Classroom 10D (Details)",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_122.gif",
+        "is_ai_image": true
     },
     {
         "id": 123,
@@ -1595,8 +1595,8 @@
         "location": "Corridor",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_123.gif",
+        "is_ai_image": true
     },
     {
         "id": 124,
@@ -1608,8 +1608,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_124.gif",
+        "is_ai_image": true
     },
     {
         "id": 125,
@@ -1621,8 +1621,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_125.gif",
+        "is_ai_image": true
     },
     {
         "id": 126,
@@ -1634,8 +1634,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_126.gif",
+        "is_ai_image": true
     },
     {
         "id": 127,
@@ -1647,8 +1647,8 @@
         "location": "Corridor",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_127.gif",
+        "is_ai_image": true
     },
     {
         "id": 128,
@@ -1660,8 +1660,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_128.gif",
+        "is_ai_image": true
     },
     {
         "id": 129,
@@ -1673,8 +1673,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_129.gif",
+        "is_ai_image": true
     },
     {
         "id": 130,
@@ -1686,8 +1686,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_130.gif",
+        "is_ai_image": true
     },
     {
         "id": 131,
@@ -1699,8 +1699,8 @@
         "location": "Classroom 9D (Details)",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_131.gif",
+        "is_ai_image": true
     },
     {
         "id": 132,
@@ -1712,8 +1712,8 @@
         "location": "Classroom 9D",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_132.gif",
+        "is_ai_image": true
     },
     {
         "id": 133,
@@ -1725,8 +1725,8 @@
         "location": "Classroom 8D",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_133.gif",
+        "is_ai_image": true
     },
     {
         "id": 134,
@@ -1738,8 +1738,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_134.gif",
+        "is_ai_image": true
     },
     {
         "id": 135,
@@ -1751,8 +1751,8 @@
         "location": "Corridor",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_135.gif",
+        "is_ai_image": true
     },
     {
         "id": 136,
@@ -1764,8 +1764,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_136.gif",
+        "is_ai_image": true
     },
     {
         "id": 137,
@@ -1777,8 +1777,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_137.gif",
+        "is_ai_image": true
     },
     {
         "id": 138,
@@ -1790,8 +1790,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_138.gif",
+        "is_ai_image": true
     },
     {
         "id": 139,
@@ -1803,8 +1803,8 @@
         "location": "Classroom 8D",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_139.gif",
+        "is_ai_image": true
     },
     {
         "id": 140,
@@ -1816,8 +1816,8 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_140.gif",
+        "is_ai_image": true
     },
     {
         "id": 141,
@@ -1829,8 +1829,8 @@
         "location": "Classroom 9D",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_141.gif",
+        "is_ai_image": true
     },
     {
         "id": 142,
@@ -1842,8 +1842,8 @@
         "location": "Classroom 9D",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_142.gif",
+        "is_ai_image": true
     },
     {
         "id": 143,
@@ -1855,8 +1855,8 @@
         "location": "Classroom 9D",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_143.gif",
+        "is_ai_image": true
     },
     {
         "id": 144,
@@ -1868,8 +1868,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_144.gif",
+        "is_ai_image": true
     },
     {
         "id": 145,
@@ -1881,8 +1881,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_145.gif",
+        "is_ai_image": true
     },
     {
         "id": 146,
@@ -1894,8 +1894,8 @@
         "location": "Corridor",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_146.gif",
+        "is_ai_image": true
     },
     {
         "id": 147,
@@ -1907,8 +1907,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_147.gif",
+        "is_ai_image": true
     },
     {
         "id": 148,
@@ -1920,8 +1920,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_148.gif",
+        "is_ai_image": true
     },
     {
         "id": 149,
@@ -1933,8 +1933,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_149.gif",
+        "is_ai_image": true
     },
     {
         "id": 150,
@@ -1946,8 +1946,8 @@
         "location": "Classroom 10A",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_150.gif",
+        "is_ai_image": true
     },
     {
         "id": 151,
@@ -1959,8 +1959,8 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_151.gif",
+        "is_ai_image": true
     },
     {
         "id": 152,
@@ -1972,8 +1972,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_152.gif",
+        "is_ai_image": true
     },
     {
         "id": 153,
@@ -1985,8 +1985,8 @@
         "location": "Classroom 8G",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_153.gif",
+        "is_ai_image": true
     },
     {
         "id": 154,
@@ -1998,8 +1998,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_154.gif",
+        "is_ai_image": true
     },
     {
         "id": 155,
@@ -2011,8 +2011,8 @@
         "location": "Corridor",
         "grade": "Grade 8",
         "color": "#2196f3",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_155.gif",
+        "is_ai_image": true
     },
     {
         "id": 156,
@@ -2024,8 +2024,8 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_156.gif",
+        "is_ai_image": true
     },
     {
         "id": 157,
@@ -2037,8 +2037,8 @@
         "location": "Classroom 9C (Details)",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_157.gif",
+        "is_ai_image": true
     },
     {
         "id": 158,
@@ -2050,8 +2050,8 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_158.gif",
+        "is_ai_image": true
     },
     {
         "id": 159,
@@ -2063,8 +2063,8 @@
         "location": "Classroom 9C",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_159.gif",
+        "is_ai_image": true
     },
     {
         "id": 160,
@@ -2076,8 +2076,8 @@
         "location": "Classroom 9C",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_160.gif",
+        "is_ai_image": true
     },
     {
         "id": 161,
@@ -2089,8 +2089,8 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_161.gif",
+        "is_ai_image": true
     },
     {
         "id": 162,
@@ -2102,8 +2102,8 @@
         "location": "Classroom 9C",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_162.gif",
+        "is_ai_image": true
     },
     {
         "id": 163,
@@ -2115,8 +2115,8 @@
         "location": "Classroom 9C",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_163.gif",
+        "is_ai_image": true
     },
     {
         "id": 164,
@@ -2128,8 +2128,8 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_164.gif",
+        "is_ai_image": true
     },
     {
         "id": 165,
@@ -2141,8 +2141,8 @@
         "location": "Classroom 9C",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_165.gif",
+        "is_ai_image": true
     },
     {
         "id": 166,
@@ -2154,8 +2154,8 @@
         "location": "Classroom 10A",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_166.gif",
+        "is_ai_image": true
     },
     {
         "id": 167,
@@ -2167,8 +2167,8 @@
         "location": "Classroom 10A",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_167.gif",
+        "is_ai_image": true
     },
     {
         "id": 168,
@@ -2180,8 +2180,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_168.gif",
+        "is_ai_image": true
     },
     {
         "id": 169,
@@ -2193,8 +2193,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_169.gif",
+        "is_ai_image": true
     },
     {
         "id": 170,
@@ -2206,8 +2206,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_170.gif",
+        "is_ai_image": true
     },
     {
         "id": 171,
@@ -2219,8 +2219,8 @@
         "location": "Classroom 10D",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_171.gif",
+        "is_ai_image": true
     },
     {
         "id": 172,
@@ -2232,8 +2232,8 @@
         "location": "Classroom 10A",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_172.gif",
+        "is_ai_image": true
     },
     {
         "id": 173,
@@ -2245,8 +2245,8 @@
         "location": "Corridor",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_173.gif",
+        "is_ai_image": true
     },
     {
         "id": 174,
@@ -2258,8 +2258,8 @@
         "location": "Classroom 10A",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_174.gif",
+        "is_ai_image": true
     },
     {
         "id": 175,
@@ -2271,8 +2271,8 @@
         "location": "Corridor",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_175.gif",
+        "is_ai_image": true
     },
     {
         "id": 176,
@@ -2284,8 +2284,8 @@
         "location": "Corridor",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_176.gif",
+        "is_ai_image": true
     },
     {
         "id": 177,
@@ -2297,8 +2297,8 @@
         "location": "Classroom 10E (Details)",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_177.gif",
+        "is_ai_image": true
     },
     {
         "id": 178,
@@ -2310,8 +2310,8 @@
         "location": "Classroom 10E",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_178.gif",
+        "is_ai_image": true
     },
     {
         "id": 179,
@@ -2323,8 +2323,8 @@
         "location": "Classroom 10B",
         "grade": "Grade 10",
         "color": "#e91e63",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_179.gif",
+        "is_ai_image": true
     },
     {
         "id": 180,
@@ -2336,8 +2336,8 @@
         "location": "Classroom 9B",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_180.gif",
+        "is_ai_image": true
     },
     {
         "id": 181,
@@ -2349,8 +2349,8 @@
         "location": "Classroom 9B",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_181.gif",
+        "is_ai_image": true
     },
     {
         "id": 182,
@@ -2362,8 +2362,8 @@
         "location": "Classroom 9B",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_182.gif",
+        "is_ai_image": true
     },
     {
         "id": 183,
@@ -2375,8 +2375,8 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_183.gif",
+        "is_ai_image": true
     },
     {
         "id": 184,
@@ -2388,8 +2388,8 @@
         "location": "Classroom 9B",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_184.gif",
+        "is_ai_image": true
     },
     {
         "id": 185,
@@ -2401,8 +2401,8 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_185.gif",
+        "is_ai_image": true
     },
     {
         "id": 186,
@@ -2414,8 +2414,8 @@
         "location": "Classroom 9B",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_186.gif",
+        "is_ai_image": true
     },
     {
         "id": 187,
@@ -2427,7 +2427,7 @@
         "location": "Corridor",
         "grade": "Grade 9",
         "color": "#3f51b5",
-        "image": "images/history_fallback.gif",
-        "is_ai_image": false
+        "image": "images/event_187.gif",
+        "is_ai_image": true
     }
 ]
