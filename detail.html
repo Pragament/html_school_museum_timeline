@@ -489,6 +489,46 @@
             box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
         }
 
+        /* Modal Actions Row */
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .action-btn {
+            flex: 1;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .download-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .download-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        .print-btn {
+            background: rgba(255, 152, 0, 0.1);
+            color: #ff9800;
+            border: 1px solid rgba(255, 152, 0, 0.25);
+        }
+        .print-btn:hover {
+            background: rgba(255, 152, 0, 0.2);
+            border-color: #ff9800;
+            transform: translateY(-1px);
+        }
+
         .loading-screen, .error-screen {
             text-align: center;
             padding: 80px 20px;
@@ -790,6 +830,120 @@
             }
         }
 
+        function downloadQrCode() {
+            const qrContainer = document.getElementById("qrcode");
+            const canvas = qrContainer.querySelector("canvas");
+            const img = qrContainer.querySelector("img");
+            
+            let dataUrl = "";
+            if (canvas) {
+                dataUrl = canvas.toDataURL("image/png");
+            } else if (img && img.src) {
+                dataUrl = img.src;
+            }
+            
+            if (!dataUrl) {
+                alert("Could not generate download link for QR Code.");
+                return;
+            }
+            
+            const link = document.createElement("a");
+            link.href = dataUrl;
+            
+            const eventTitle = document.querySelector(".event-title")?.textContent || "event";
+            const safeTitle = eventTitle.toLowerCase().replace(/[^a-z0-9]+/g, "_").slice(0, 30);
+            link.download = `qrcode_${safeTitle}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function printQrCode() {
+            const qrContainer = document.getElementById("qrcode");
+            const canvas = qrContainer.querySelector("canvas");
+            const img = qrContainer.querySelector("img");
+            
+            let dataUrl = "";
+            if (canvas) {
+                dataUrl = canvas.toDataURL("image/png");
+            } else if (img && img.src) {
+                dataUrl = img.src;
+            }
+            
+            if (!dataUrl) {
+                alert("Could not print QR Code.");
+                return;
+            }
+            
+            const eventTitle = document.querySelector(".event-title")?.textContent || "Historical Event";
+            const eventSubtitle = document.querySelector(".event-subtitle")?.textContent || "";
+            
+            const printWindow = window.open("", "_blank", "width=600,height=600");
+            printWindow.document.open();
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Print QR Code - ${eventTitle}</title>
+                    <style>
+                        body {
+                            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                            text-align: center;
+                            padding: 40px;
+                            color: #1a1a2e;
+                        }
+                        .container {
+                            max-width: 400px;
+                            margin: 0 auto;
+                            border: 2px dashed #ccc;
+                            padding: 30px;
+                            border-radius: 16px;
+                        }
+                        h2 {
+                            margin-top: 0;
+                            font-size: 22px;
+                            color: #1a1a2e;
+                        }
+                        p {
+                            font-size: 14px;
+                            color: #555;
+                            margin-bottom: 25px;
+                        }
+                        img {
+                            width: 200px;
+                            height: 200px;
+                            margin-bottom: 20px;
+                        }
+                        .footer {
+                            font-size: 11px;
+                            color: #888;
+                            margin-top: 30px;
+                            border-top: 1px solid #eee;
+                            padding-top: 15px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h2>🏛️ CBSE History Museum</h2>
+                        <p><strong>${eventTitle}</strong><br><small>${eventSubtitle}</small></p>
+                        <img src="${dataUrl}" alt="QR Code">
+                        <div class="footer">
+                            Scan to view this timeline entry online.<br>
+                            CBSE School Museum Timeline Project
+                        </div>
+                    </div>
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            window.close();
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
         initPage();
     </script>
 
@@ -801,6 +955,14 @@
             <p>Scan this QR code to view this historical entry on your mobile device!</p>
             <div id="qrcode-container">
                 <div id="qrcode"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn download-btn" onclick="downloadQrCode()">
+                    📥 Download
+                </button>
+                <button class="action-btn print-btn" onclick="printQrCode()">
+                    🖨️ Print
+                </button>
             </div>
             <button class="modal-btn" onclick="hideQrModal()">Close</button>
         </div>
