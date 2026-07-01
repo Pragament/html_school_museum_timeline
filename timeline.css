@@ -105,6 +105,7 @@ body {
     height: 100%;
     background: linear-gradient(to bottom, #ff9800, #ff5722, #ff9800);
     border-radius: 2px;
+    z-index: 1;
 }
 
 .timeline-item {
@@ -113,6 +114,7 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
+    z-index: 2;
 }
 
 .timeline-item.left {
@@ -179,6 +181,30 @@ body {
     font-size: 10px;
 }
 
+.badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.chapter-badge-row {
+    margin-bottom: 6px;
+}
+
+.chapter-badge {
+    display: inline-block;
+    background: rgba(0, 188, 212, 0.15);
+    border: 1px solid rgba(0, 188, 212, 0.35);
+    color: #00bcd4;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
 .cause-preview {
     font-size: 12px;
     color: #aaa;
@@ -208,7 +234,7 @@ body {
     display: flex;
     align-items: center;
     gap: 14px;
-    z-index: 3;
+    z-index: 4;
 }
 
 .era-divider::before,
@@ -220,15 +246,17 @@ body {
 }
 
 .era-label {
-    background: rgba(255, 152, 0, 0.15);
-    border: 1px solid rgba(255, 152, 0, 0.35);
-    padding: 5px 18px;
+    background: #12123a;
+    border: 1px solid rgba(255, 152, 0, 0.5);
+    padding: 6px 20px;
     border-radius: 30px;
     font-size: 12px;
     font-weight: bold;
     color: #ff9800;
     white-space: nowrap;
     letter-spacing: 0.5px;
+    position: relative;
+    z-index: 5;
 }
 
 
