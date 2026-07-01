@@ -16,16 +16,18 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 12px 20px;
+    background: rgba(8, 10, 16, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 14px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
     z-index: 1000;
-    border-bottom: 2px solid #ff9800;
+    border-bottom: 1px solid rgba(255, 152, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .logo {
@@ -44,26 +46,32 @@ body {
 }
 
 .mode-btn {
-    background: #333;
-    border: none;
-    color: white;
-    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cfd8dc;
+    padding: 8px 22px;
     border-radius: 30px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: bold;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: inline-flex;
+    align-items: center;
 }
 
 .mode-btn.active {
-    background: #ff9800;
-    color: #1a1a2e;
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    color: #0f0c29;
+    border-color: #ff9800;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.35);
 }
 
 .mode-btn:hover {
-    background: #ffb74d;
-    color: #1a1a2e;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
 }
 
 .timeline-view {
@@ -103,16 +111,19 @@ body {
     transform: translateX(-50%);
     width: 4px;
     height: 100%;
-    background: linear-gradient(to bottom, #ff9800, #ff5722, #ff9800);
+    background: linear-gradient(to bottom, transparent, #ff9800 5%, #ff5722 50%, #ff9800 95%, transparent);
     border-radius: 2px;
+    z-index: 1;
 }
 
 .timeline-item {
     position: relative;
-    margin-bottom: 40px;
+    margin-bottom: 45px;
     display: flex;
     justify-content: center;
     width: 100%;
+    z-index: 2;
+    animation: fadeInUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) both;
 }
 
 .timeline-item.left {
@@ -125,30 +136,62 @@ body {
 
 .timeline-content {
     width: 45%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
+    background: rgba(18, 22, 35, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 16px;
-    padding: 20px;
-    border-left: 5px solid;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 6px solid;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     cursor: pointer;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, var(--event-color), transparent);
+    opacity: 0.8;
 }
 
 .timeline-content:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transform: translateY(-8px) scale(1.015);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 20px var(--event-color);
+    border-color: var(--event-color);
 }
 
-.year-badge {
-    display: inline-block;
-    background: #ff9800;
-    color: #1a1a2e;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 10px;
+/* Floating year marker positioned on the central timeline line */
+.timeline-year-marker {
+    position: absolute;
+    top: 24px; /* Center-aligned with the 16px timeline dot at 25px top */
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #ff9800;
+    text-shadow: 0 0 10px rgba(255, 152, 0, 0.45);
+    white-space: nowrap;
+    z-index: 5;
+    background: transparent;
 }
+
+/* Position year to the right of the center line for left-aligned cards */
+.timeline-item.left .timeline-year-marker {
+    left: calc(50% + 20px);
+    text-align: left;
+}
+
+/* Position year to the left of the center line for right-aligned cards */
+.timeline-item.right .timeline-year-marker {
+    right: calc(50% + 20px);
+    text-align: right;
+}
+
 
 .timeline-content .title {
     font-size: 18px;
@@ -179,6 +222,55 @@ body {
     font-size: 10px;
 }
 
+
+/* Museum panel/corridor position badge */
+.panel-badge {
+    display: inline-block;
+    background: rgba(103, 58, 183, 0.2);
+    border: 1px solid rgba(103, 58, 183, 0.45);
+    color: #ce93d8;
+    padding: 2px 9px;
+    border-radius: 15px;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+/* Topic name label above card title */
+.topic-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--event-color, #ff9800);
+    opacity: 0.85;
+    margin-bottom: 4px;
+    margin-top: 6px;
+}
+
+.badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.chapter-badge-row {
+    margin-bottom: 6px;
+}
+
+.chapter-badge {
+    display: inline-block;
+    background: rgba(0, 188, 212, 0.15);
+    border: 1px solid rgba(0, 188, 212, 0.35);
+    color: #00bcd4;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
 .cause-preview {
     font-size: 12px;
     color: #aaa;
@@ -198,6 +290,7 @@ body {
     border: 3px solid #fff;
     z-index: 2;
     top: 25px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .era-divider {
@@ -208,7 +301,7 @@ body {
     display: flex;
     align-items: center;
     gap: 14px;
-    z-index: 3;
+    z-index: 4;
 }
 
 .era-divider::before,
@@ -220,55 +313,73 @@ body {
 }
 
 .era-label {
-    background: rgba(255, 152, 0, 0.15);
-    border: 1px solid rgba(255, 152, 0, 0.35);
-    padding: 5px 18px;
+    background: #12123a;
+    border: 1px solid rgba(255, 152, 0, 0.5);
+    padding: 6px 20px;
     border-radius: 30px;
     font-size: 12px;
     font-weight: bold;
     color: #ff9800;
     white-space: nowrap;
     letter-spacing: 0.5px;
+    position: relative;
+    z-index: 5;
 }
 
 
 .timeline-controls {
     position: sticky;
-    top: 70px;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    padding: 12px 20px;
-    border-radius: 50px;
+    top: 75px;
+    background: rgba(18, 22, 35, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 14px 28px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+    margin: 0 auto 40px;
+    max-width: fit-content;
     z-index: 100;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .nav-btn {
-    background: #ff9800;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 30px;
+    background: rgba(255, 152, 0, 0.12);
+    border: 1px solid rgba(255, 152, 0, 0.3);
+    padding: 10px 22px;
+    border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
-    color: #1a1a2e;
-    transition: all 0.2s ease;
+    color: #ff9800;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .nav-btn:hover {
-    background: #ffb74d;
-    transform: scale(1.02);
+    background: #ff9800;
+    color: #1a1a2e;
+    transform: scale(1.03);
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.2);
 }
 
 .search-box {
-    padding: 8px 15px;
-    border-radius: 30px;
-    border: none;
-    width: 250px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    width: 280px;
     outline: none;
+    font-size: 13.5px;
+    transition: all 0.3s ease;
+}
+
+.search-box:focus {
+    border-color: #ff9800;
+    box-shadow: 0 0 12px rgba(255, 152, 0, 0.25);
+    background: rgba(0, 0, 0, 0.6);
 }
 
 .filter-buttons {
@@ -278,19 +389,29 @@ body {
 }
 
 .filter-btn {
-    background: #333;
-    border: none;
-    color: white;
-    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #b0bec5;
+    padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s ease;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
 }
 
 .filter-btn.active {
-    background: #ff9800;
-    color: #1a1a2e;
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    color: #0f0c29;
+    border-color: #ff9800;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.35);
 }
 
 .scroll-indicator {
@@ -356,6 +477,23 @@ body {
     .era-divider {
         display: none;
     }
+
+    .timeline-year-marker {
+        position: relative;
+        top: 0;
+        left: 0 !important;
+        right: 0 !important;
+        display: inline-block;
+        background: #ff9800;
+        color: #1a1a2e;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-shadow: none;
+        white-space: normal;
+    }
 }
 
 ::-webkit-scrollbar {
@@ -403,4 +541,35 @@ body {
     font-weight: bold;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Staggered entrance animation for timeline cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.timeline-item:nth-child(1) { animation-delay: 0.05s; }
+.timeline-item:nth-child(2) { animation-delay: 0.10s; }
+.timeline-item:nth-child(3) { animation-delay: 0.15s; }
+.timeline-item:nth-child(4) { animation-delay: 0.20s; }
+.timeline-item:nth-child(5) { animation-delay: 0.25s; }
+.timeline-item:nth-child(6) { animation-delay: 0.30s; }
+.timeline-item:nth-child(7) { animation-delay: 0.35s; }
+.timeline-item:nth-child(8) { animation-delay: 0.40s; }
+.timeline-item:nth-child(9) { animation-delay: 0.45s; }
+.timeline-item:nth-child(10) { animation-delay: 0.50s; }
+
+/* Interactive Timeline Dot Scaling & Glowing */
+.timeline-item:hover .timeline-dot {
+    background: #ffffff;
+    border-color: #ff9800;
+    transform: translateX(-50%) scale(1.35);
+    box-shadow: 0 0 12px #ff9800;
 }

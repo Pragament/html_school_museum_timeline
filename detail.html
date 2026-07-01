@@ -107,12 +107,13 @@
         }
 
         .detail-card {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(18, 22, 35, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px var(--event-color);
             display: grid;
             grid-template-columns: 1.2fr 1fr;
             min-height: 550px;
@@ -157,6 +158,10 @@
             left: 0;
             animation: kenburns 20s infinite ease-in-out;
             transition: transform 0.8s ease;
+        }
+
+        .event-image.no-kenburns {
+            animation: none;
         }
 
         .image-side:hover .event-image {
@@ -595,7 +600,7 @@
     </main>
 
     <script>
-        const EVENTS_JSON_URL = "events_data.json";
+        const EVENTS_JSON_URL = "/api/events";
 
         function escapeHtml(value) {
             return String(value ?? "").replace(/[&<>"']/g, char => ({
@@ -707,15 +712,16 @@
 
             const hasImage = !!event.image;
             const cardClass = hasImage ? "detail-card" : "detail-card no-image";
+            const isGif = event.image && event.image.toLowerCase().endsWith('.gif');
             const imageHtml = hasImage ? `
                 <div class="image-side">
-                    <img class="event-image" src="${event.image}" alt="${escapeHtml(event.title)}">
+                    <img class="event-image ${isGif ? 'no-kenburns' : ''}" src="${event.image}" alt="${escapeHtml(event.title)}">
                     <div class="image-overlay"></div>
                 </div>
             ` : "";
 
             mainContainer.innerHTML = `
-                <div class="${cardClass}">
+                <div class="${cardClass}" style="--event-color: ${event.color};">
                     ${imageHtml}
                     
                     <div class="content-side">

@@ -783,11 +783,11 @@
                             <div class="preview-card">
                                 <div class="preview-images-split">
                                     <div class="image-half">
-                                        <img id="previewStaticImg" src="images/history_fallback.gif" alt="Static Image">
+                                        <img id="previewStaticImg" src="" alt="Static Image">
                                         <div class="half-label">STATIC ORIGINAL</div>
                                     </div>
                                     <div class="image-half">
-                                        <img id="previewGifImg" src="images/history_fallback.gif" alt="Generated GIF">
+                                        <img id="previewGifImg" src="" alt="Generated GIF">
                                         <div class="half-label">ACTIVE ANIMATED GIF</div>
                                     </div>
                                 </div>
@@ -1274,7 +1274,7 @@
                 }
 
                 container.innerHTML = filtered.map(e => {
-                    const isCustom = e.is_ai_image && e.image !== "images/history_fallback.gif";
+                    const isCustom = e.is_ai_image && e.image !== "";
                     const badgeClass = isCustom ? "status-custom" : "status-fallback";
                     const badgeText = isCustom ? "CUSTOM GIF" : "FALLBACK";
                     const isActive = !batchMode && selectedEvent && selectedEvent.id === e.id ? "active" : "";
@@ -1333,7 +1333,7 @@
                 document.getElementById("animationEffect").value = promptData.animation;
 
                 // Enable/disable preview actions
-                const isGenerated = selectedEvent.is_ai_image && selectedEvent.image !== "images/history_fallback.gif";
+                const isGenerated = selectedEvent.is_ai_image && selectedEvent.image !== "";
                 document.getElementById("btnDownloadGif").disabled = !isGenerated;
                 document.getElementById("btnReplaceGif").disabled = !isGenerated;
                 document.getElementById("btnDeleteGif").disabled = !isGenerated;

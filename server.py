@@ -2,6 +2,7 @@ import os
 import json
 import uuid
 import asyncio
+import urllib.request
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Query
 from fastapi.staticfiles import StaticFiles
@@ -185,15 +186,123 @@ async def get_history(limit: int = 100):
 
 # --- EVENT & TIMELINE DB METADATA ENDPOINTS ---
 
+API_URL = "https://staticapis.pragament.com/lms/cbse/topic-timeline.json"
+
+ERA_COLORS = {
+    "Prehistory": "#8bc34a",
+    "Ancient": "#cddc39",
+    "Ancient India": "#8bc34a",
+    "Global Trade": "#ffeb3b",
+    "Medieval India": "#ff9800",
+    "Mughal Empire": "#9c27b0",
+    "Colonial India": "#2196f3",
+    "Social Reform": "#00bcd4",
+    "Indian Nationalism": "#e91e63",
+    "World History": "#3f51b5"
+}
+
+GRADE_COLORS = {
+    "Grade 6": "#4caf50",
+    "Grade 7": "#ff9800",
+    "Grade 8": "#2196f3",
+    "Grade 9": "#3f51b5",
+    "Grade 10": "#e91e63"
+}
+
 @app.get("/api/events")
 async def get_events():
-    if os.path.exists(EVENTS_DATA_FILE):
+    try:
+        req = urllib.request.Request(
+            API_URL,
+            headers={'User-Agent': 'Mozilla/5.0'}
+        )
+        loop = asyncio.get_running_loop()
+        def fetch_api():
+            with urllib.request.urlopen(req, timeout=5) as response:
+                return json.loads(response.read().decode('utf-8'))
+        
+        data = await loop.run_in_executor(None, fetch_api)
+        subtopics = data.get("timeline", {}).get("subtopics", [])
+        if not subtopics:
+            raise Exception("No subtopics in API timeline")
+
+        local_override_map = {}
+        if os.path.exists(EVENTS_DATA_FILE):
+            try:
+                with open(EVENTS_DATA_FILE, "r", encoding="utf-8") as f:
+                    local_events = json.load(f)
+                    for le in local_events:
+                        if le.get("image") or le.get("is_ai_image"):
+                            local_override_map[le["id"]] = {
+                                "image": le.get("image", ""),
+                                "is_ai_image": le.get("is_ai_image", False)
+                            }
+            except Exception:
+                pass
+
+        processed_events = []
+        for index, item in enumerate(subtopics):
+            event_id = index + 1
+            subtopic_name = item.get("subtopic_name") or item.get("topic_name") or "Untitled topic"
+            topic_name = item.get("topic_name") or ""
+            chapter_name = item.get("chapter_name") or ""
+
+            subtitle_parts = [part for part in [topic_name, chapter_name] if part]
+            subtitle = " | ".join(subtitle_parts)
+
+            grade = str(item.get("grade") or "").strip()
+            if grade and not grade.lower().startswith("grade"):
+                grade = f"Grade {grade}"
+            elif not grade:
+                grade = "Grade"
+
+            location = item.get("display_location") or item.get("location") or item.get("corridor_classroom_position") or "Location not specified"
+            cause_effect = item.get("cause_effect") or "Cause & effect details not available."
+
+            color = ERA_COLORS.get(chapter_name) or GRADE_COLORS.get(grade) or "#ff9800"
+
+            if event_id in local_override_map:
+                img_src = local_override_map[event_id]["image"]
+                is_ai = local_override_map[event_id]["is_ai_image"]
+            else:
+                img_src = (
+                    item.get("image_url") or
+                    item.get("image") or
+                    item.get("gif_url") or
+                    item.get("thumbnail_url") or
+                    ""
+                )
+                is_ai = bool(img_src)
+
+            event = {
+                "id": event_id,
+                "title": subtopic_name,
+                "topic_name": topic_name,
+                "subtitle": subtitle,
+                "year": item.get("year_period") or "Period not specified",
+                "era": chapter_name or "Timeline",
+                "cause_effect": cause_effect,
+                "location": location,
+                "geo_location": item.get("location") or "",
+                "panel_position": item.get("corridor_classroom_position") or "",
+                "grade": grade,
+                "color": color,
+                "image": img_src,
+                "is_ai_image": is_ai
+            }
+            processed_events.append(event)
+
         try:
-            with open(EVENTS_DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Error reading database: {e}")
-    return []
+            with open(EVENTS_DATA_FILE, 'w', encoding='utf-8') as f:
+                json.dump(processed_events, f, indent=4, ensure_ascii=False)
+        except Exception:
+            pass
+
+        return processed_events
+
+    except Exception as e:
+        print(f"API fetch failed: {e}")
+        raise HTTPException(status_code=503, detail=f"Unable to fetch data from external API: {str(e)}")
 
 @app.post("/api/reset_event")
 async def reset_event(req: dict):
@@ -211,21 +320,9 @@ async def reset_event(req: dict):
     if not event:
         raise HTTPException(status_code=404, detail=f"Event {event_id} not found.")
         
-    # Set default image
-    curated_defaults = {
-        10: "images/discovery_of_fire.gif",
-        13: "images/bhimbetka_cave_art.gif",
-        14: "images/invention_of_wheel.gif",
-        19: "images/great_bath_mohenjodaro.gif",
-        55: "images/gutenberg_press.gif"
-    }
-    
-    if event_id in curated_defaults:
-        event["image"] = curated_defaults[event_id]
-        event["is_ai_image"] = True
-    else:
-        event["image"] = "images/history_fallback.gif"
-        event["is_ai_image"] = False
+    # Clear image path to empty (resetting to dynamic API state)
+    event["image"] = ""
+    event["is_ai_image"] = False
         
     with open(EVENTS_DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(events, f, indent=4, ensure_ascii=False)
