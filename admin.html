@@ -1510,7 +1510,7 @@
                 }
 
                 const pipelineType = document.getElementById("batchPipelineType").value;
-                const batchModeVal = document.querySelector(".mode-card.active").dataset.batchmode || "fooocus";
+                const batchModeVal = document.querySelector("#batchWorkspace .mode-card.active")?.dataset.batchmode || "fooocus";
                 const effect = document.getElementById("batchAnimationEffect").value;
 
                 if (batchModeVal === "fooocus" && !serverOnline) {

@@ -99,8 +99,7 @@ function renderTimelineView(filterGrade = "all", searchTerm = "") {
 
     filteredTopics.forEach((topic, index) => {
         if (topic.era !== lastEra) {
-            const eraY = 25 + (index * 85);
-            html += `<div class="era-label" style="top: ${eraY}px;">📌 ${escapeHtml(topic.era)}</div>`;
+            html += `<div class="era-divider"><span class="era-label">📌 ${escapeHtml(topic.era)}</span></div>`;
             lastEra = topic.era;
         }
 

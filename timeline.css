@@ -200,19 +200,37 @@ body {
     top: 25px;
 }
 
+.era-divider {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    margin: 24px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 3;
+}
+
+.era-divider::before,
+.era-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 152, 0, 0.4), transparent);
+}
+
 .era-label {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 152, 0, 0.2);
-    padding: 5px 15px;
+    background: rgba(255, 152, 0, 0.15);
+    border: 1px solid rgba(255, 152, 0, 0.35);
+    padding: 5px 18px;
     border-radius: 30px;
     font-size: 12px;
     font-weight: bold;
     color: #ff9800;
     white-space: nowrap;
-    z-index: 3;
+    letter-spacing: 0.5px;
 }
+
 
 .timeline-controls {
     position: sticky;
@@ -296,76 +314,7 @@ body {
     transform: scale(1.1);
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.95);
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
-}
 
-.modal-content {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    max-width: 550px;
-    width: 90%;
-    border-radius: 20px;
-    padding: 30px;
-    border-top: 5px solid #ff9800;
-    max-height: 80%;
-    overflow-y: auto;
-}
-
-.modal-content h2 {
-    color: #ff9800;
-    margin-bottom: 15px;
-}
-
-.modal-content .close {
-    float: right;
-    font-size: 28px;
-    cursor: pointer;
-    color: #aaa;
-    transition: color 0.2s;
-}
-
-.modal-content .close:hover {
-    color: white;
-}
-
-.modal-year {
-    display: inline-block;
-    background: #ff9800;
-    color: #1a1a2e;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-.modal-subtitle {
-    color: #ccc;
-    margin: 10px 0;
-}
-
-.modal-cause-effect {
-    margin-top: 15px;
-    line-height: 1.6;
-}
-
-.modal-location {
-    margin-top: 15px;
-    color: #ff9800;
-}
-
-.modal-grade {
-    margin-top: 5px;
-}
 
 .timeline-message {
     text-align: center;
@@ -404,7 +353,7 @@ body {
         left: 20px;
     }
 
-    .era-label {
+    .era-divider {
         display: none;
     }
 }
