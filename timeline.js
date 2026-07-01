@@ -5,7 +5,7 @@ if (eventId) {
     window.location.href = `detail.html?id=${eventId}`;
 }
 
-const EVENTS_JSON_URL = "events_data.json";
+const EVENTS_JSON_URL = "/api/events";
 
 let allTopics = [];
 let timelineMeta = {
@@ -43,7 +43,7 @@ function renderTimelineMessage(message, isLoading = false) {
                     The interactive timeline needs to connect to the local museum server. Please ask your teacher or lab assistant to start the server by running <code>py server.py</code> in the project directory.
                 </p>
                 <div style="font-size: 0.82rem; color: #78909c; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; font-family: monospace; display: inline-block; border: 1px solid rgba(255,255,255,0.05);">
-                    Error: Failed to fetch events_data.json
+                    Error: Failed to connect to server API
                 </div>
             </div>
         `;
@@ -64,7 +64,7 @@ async function loadTimelineData() {
 
         allTopics = await response.json();
         if (allTopics.length === 0) {
-            throw new Error("No events found in events_data.json");
+            throw new Error("No events found from API");
         }
 
         const titleEl = document.querySelector(".timeline-header h1 span");
@@ -77,7 +77,7 @@ async function loadTimelineData() {
         renderTimelineView("all", "");
     } catch (error) {
         console.error("Failed to load timeline data:", error);
-        renderTimelineMessage("Unable to load local events database. Please run process_timeline.py first.");
+        renderTimelineMessage("Unable to load events from API. Please ensure the server is running.");
     }
 }
 
