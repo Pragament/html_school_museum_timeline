@@ -111,33 +111,91 @@ function renderTimelineView(filterGrade = "all", searchTerm = "") {
 
     filteredTopics.forEach((topic, index) => {
         const side = index % 2 === 0 ? "left" : "right";
-        const causePreview = topic.cause_effect.substring(0, 100);
 
         let imageHtml = "";
         if (topic.image) {
             imageHtml = `
                 <div class="card-image-container">
                     <img class="card-image" src="${topic.image}" alt="${escapeHtml(topic.title)}">
+                    ${topic.icon ? `<div class="event-icon-overlay">${escapeHtml(topic.icon)}</div>` : ""}
                 </div>
             `;
+        }
+
+
+
+        let peopleOrgsHtml = "";
+        let people = topic.people_involved || [];
+        let orgs = topic.organizations || [];
+        if (people.length > 0 || orgs.length > 0) {
+            let tagsHtml = "";
+            people.forEach(p => tagsHtml += `<span class="person-tag">${escapeHtml(p)}</span>`);
+            orgs.forEach(o => tagsHtml += `<span class="org-tag">${escapeHtml(o)}</span>`);
+            peopleOrgsHtml = `
+                <div class="people-org-section">
+                    <div class="people-org-label">People & Organizations</div>
+                    ${tagsHtml}
+                </div>
+            `;
+        }
+
+        let whatHappenedHtml = "";
+        if (topic.what_happened) {
+            whatHappenedHtml = `<div class="what-happened">${escapeHtml(topic.what_happened)}</div>`;
+        } else {
+            const causePreview = topic.cause_effect ? topic.cause_effect.substring(0, 100) : "";
+            whatHappenedHtml = `<div class="cause-preview">📖 ${escapeHtml(causePreview)}${(topic.cause_effect && topic.cause_effect.length > 100) ? "..." : ""}</div>`;
+        }
+
+        let causeEffectBoxesHtml = "";
+        if (topic.cause || topic.immediate_effect) {
+            causeEffectBoxesHtml = `
+                <div class="cause-effect-container">
+                    ${topic.cause ? `
+                    <div class="cause-box">
+                        <span class="cause-effect-label">🔥 Cause</span>
+                        ${escapeHtml(topic.cause)}
+                    </div>
+                    ` : ""}
+                    ${(topic.cause && topic.immediate_effect) ? `<div class="arrow-box">→</div>` : ""}
+                    ${topic.immediate_effect ? `
+                    <div class="effect-box">
+                        <span class="cause-effect-label">💥 Effect</span>
+                        ${escapeHtml(topic.immediate_effect)}
+                    </div>
+                    ` : ""}
+                </div>
+            `;
+        }
+
+
+
+        let iconYearHtml = `📅 ${escapeHtml(topic.year)}`;
+        if (!topic.image && topic.icon) {
+             iconYearHtml = `${escapeHtml(topic.icon)} ${escapeHtml(topic.year)}`;
         }
 
         html += `
             <div class="timeline-item ${side}" data-id="${topic.id}">
                 <div class="timeline-dot"></div>
-                <span class="timeline-year-marker">📅 ${escapeHtml(topic.year)}</span>
+                <span class="timeline-year-marker">${iconYearHtml}</span>
                 <div class="timeline-content" style="border-left-color: ${topic.color}; --event-color: ${topic.color};">
                     ${imageHtml}
                     ${topic.topic_name ? `<div class="topic-label">${escapeHtml(topic.topic_name)}</div>` : ""}
                     <div class="title">${escapeHtml(topic.title)}</div>
+                    
                     <div class="badges-row">
                         <span class="grade-badge">${escapeHtml(topic.grade)}</span>
                     </div>
+                    
                     <div class="badges-row">
                         <span class="location-badge">📍 ${escapeHtml(topic.location)}</span>
                         ${topic.panel_position ? `<span class="panel-badge">🏛️ ${escapeHtml(topic.panel_position)}</span>` : ""}
                     </div>
-                    <div class="cause-preview">📖 ${escapeHtml(causePreview)}${topic.cause_effect.length > 100 ? "..." : ""}</div>
+                    
+                    ${peopleOrgsHtml}
+                    ${whatHappenedHtml}
+                    ${causeEffectBoxesHtml}
                 </div>
             </div>
         `;

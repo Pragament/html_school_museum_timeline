@@ -212,15 +212,11 @@ GRADE_COLORS = {
 @app.get("/api/events")
 async def get_events():
     try:
-        req = urllib.request.Request(
-            API_URL,
-            headers={'User-Agent': 'Mozilla/5.0'}
-        )
-        loop = asyncio.get_running_loop()
         def fetch_api():
-            with urllib.request.urlopen(req, timeout=5) as response:
-                return json.loads(response.read().decode('utf-8'))
-        
+            with urllib.request.urlopen(API_URL) as response:
+                return json.loads(response.read().decode())
+                
+        loop = asyncio.get_running_loop()
         data = await loop.run_in_executor(None, fetch_api)
         subtopics = data.get("timeline", {}).get("subtopics", [])
         if not subtopics:
@@ -232,11 +228,25 @@ async def get_events():
                 with open(EVENTS_DATA_FILE, "r", encoding="utf-8") as f:
                     local_events = json.load(f)
                     for le in local_events:
+                        override = {}
+                        # Always preserve image overrides
                         if le.get("image") or le.get("is_ai_image"):
-                            local_override_map[le["id"]] = {
-                                "image": le.get("image", ""),
-                                "is_ai_image": le.get("is_ai_image", False)
-                            }
+                            override["image"] = le.get("image", "")
+                            override["is_ai_image"] = le.get("is_ai_image", False)
+                        # Preserve any manually enriched fields stored locally
+                        enriched_fields = [
+                            "people_involved", "organizations", "cause", "what_happened",
+                            "immediate_effect", "long_term_impact",
+                            "keywords",
+                            "vocabulary", "did_you_know", "think_about_it",
+                            "quiz_question", "quiz_answer", "exam_importance",
+                            "event_type", "theme", "era", "icon"
+                        ]
+                        for field in enriched_fields:
+                            if field in le and le[field]:
+                                override[field] = le[field]
+                        if override:
+                            local_override_map[le["id"]] = override
             except Exception:
                 pass
 
@@ -261,26 +271,25 @@ async def get_events():
 
             color = ERA_COLORS.get(chapter_name) or GRADE_COLORS.get(grade) or "#ff9800"
 
-            if event_id in local_override_map:
-                img_src = local_override_map[event_id]["image"]
-                is_ai = local_override_map[event_id]["is_ai_image"]
-            else:
-                img_src = (
-                    item.get("image_url") or
-                    item.get("image") or
-                    item.get("gif_url") or
-                    item.get("thumbnail_url") or
-                    ""
-                )
-                is_ai = bool(img_src)
+            local_override = local_override_map.get(event_id, {})
+            img_src = (
+                local_override.get("image") or
+                item.get("image_url") or
+                item.get("image") or
+                item.get("gif_url") or
+                item.get("thumbnail_url") or
+                ""
+            )
+            is_ai = local_override.get("is_ai_image", bool(img_src))
 
             event = {
+                # --- existing fields ---
                 "id": event_id,
                 "title": subtopic_name,
                 "topic_name": topic_name,
                 "subtitle": subtitle,
                 "year": item.get("year_period") or "Period not specified",
-                "era": chapter_name or "Timeline",
+                "era": item.get("era") or chapter_name or "Timeline",
                 "cause_effect": cause_effect,
                 "location": location,
                 "geo_location": item.get("location") or "",
@@ -288,7 +297,25 @@ async def get_events():
                 "grade": grade,
                 "color": color,
                 "image": img_src,
-                "is_ai_image": is_ai
+                "is_ai_image": is_ai,
+
+                # --- new enriched fields (local override takes priority over API) ---
+                "event_type":            local_override.get("event_type")            or item.get("event_type") or "",
+                "theme":                 local_override.get("theme")                 or item.get("theme") or "",
+                "icon":                  local_override.get("icon")                  or item.get("icon") or "",
+                "people_involved":       local_override.get("people_involved")       or item.get("people_involved") or [],
+                "organizations":         local_override.get("organizations")         or item.get("organizations") or [],
+                "cause":                 local_override.get("cause")                 or item.get("cause") or "",
+                "what_happened":         local_override.get("what_happened")         or item.get("what_happened") or "",
+                "immediate_effect":      local_override.get("immediate_effect")      or item.get("immediate_effect") or "",
+                "long_term_impact":      local_override.get("long_term_impact")      or item.get("long_term_impact") or "",
+                "keywords":              local_override.get("keywords")              or item.get("keywords") or [],
+                "vocabulary":            local_override.get("vocabulary")            or item.get("vocabulary") or [],
+                "did_you_know":          local_override.get("did_you_know")          or item.get("did_you_know") or "",
+                "think_about_it":        local_override.get("think_about_it")        or item.get("think_about_it") or "",
+                "quiz_question":         local_override.get("quiz_question")         or item.get("quiz_question") or "",
+                "quiz_answer":           local_override.get("quiz_answer")           or item.get("quiz_answer") or "",
+                "exam_importance":       local_override.get("exam_importance")       or item.get("exam_importance") or "",
             }
             processed_events.append(event)
 

@@ -570,6 +570,143 @@
             color: #b0bec5;
             margin-bottom: 25px;
         }
+
+        /* Detail Page Enriched Styles */
+        .keywords-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .keyword-tag {
+            background: rgba(30, 136, 229, 0.2);
+            border: 1px solid rgba(30, 136, 229, 0.4);
+            color: #90caf9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .vocab-table th, .vocab-table td {
+            padding: 10px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+        .vocab-word {
+            font-weight: bold;
+            color: #ce93d8;
+        }
+        .vocab-def {
+            color: #b0bec5;
+        }
+        .did-you-know {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .did-you-know h4 {
+            color: #ffd54f;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .think-about-it {
+            background: rgba(0, 150, 136, 0.1);
+            border-left: 4px solid #009688;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .think-about-it h4 {
+            color: #80cbc4;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .quiz-container {
+            background: rgba(156, 39, 176, 0.1);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .quiz-question {
+            font-size: 15px;
+            font-weight: bold;
+            color: #f3e5f5;
+            margin-bottom: 15px;
+        }
+        .quiz-answer-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .quiz-answer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            color: #b0bec5;
+            font-size: 14px;
+            filter: blur(8px);
+            transition: filter 0.3s ease;
+        }
+        .quiz-answer-container.revealed .quiz-answer {
+            filter: blur(0);
+        }
+        .quiz-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(156, 39, 176, 0.2);
+            color: #e1bee7;
+            font-weight: bold;
+            font-size: 13px;
+            transition: opacity 0.3s ease;
+        }
+        .quiz-answer-container.revealed .quiz-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .exam-badge {
+            display: inline-block;
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.4);
+            color: #ef9a9a;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .empty-placeholder {
+            color: #546e7a;
+            font-style: italic;
+            font-size: 13px;
+        }
+
+        .keywords-section {
+            margin-bottom: 18px;
+        }
     </style>
     <!-- QRCode.js Library -->
     <script src="qrcode.min.js"></script>
@@ -675,22 +812,44 @@
         function renderEvent(event, prevEvent, nextEvent) {
             const mainContainer = document.getElementById("mainContainer");
             
-            // Format Cause & Effect HTML
+            // Format Cause & Effect / What Happened HTML
             let causeEffectHtml = "";
-            if (event.cause_effect && event.cause_effect !== "Cause & effect details not available.") {
+            if (event.cause || event.immediate_effect) {
+                causeEffectHtml = `
+                    <div class="badges-grid" style="margin-bottom: 20px;">
+                        ${event.cause ? `
+                        <div class="section-box" style="border-left-color: #ff9800; margin-bottom: 0;">
+                            <h4>🔥 Cause</h4>
+                            <p>${escapeHtml(event.cause)}</p>
+                        </div>` : ""}
+                        ${event.immediate_effect ? `
+                        <div class="section-box" style="border-left-color: #4caf50; margin-bottom: 0;">
+                            <h4>⚡ Effect / Consequence</h4>
+                            <p>${escapeHtml(event.immediate_effect)}</p>
+                        </div>` : ""}
+                    </div>
+                `;
+            } else if (event.what_happened) {
+                causeEffectHtml = `
+                    <div class="section-box" style="border-left-color: ${event.color};">
+                        <h4>📖 What Happened</h4>
+                        <p>${escapeHtml(event.what_happened)}</p>
+                    </div>
+                `;
+            } else if (event.cause_effect && event.cause_effect !== "Cause & effect details not available.") {
+                // Fallback to old split
                 const parts = event.cause_effect.split("Effect:");
                 if (parts.length === 2) {
-                    const causeText = parts[0].replace("Cause:", "").trim();
-                    const effectText = parts[1].trim();
-                    
                     causeEffectHtml = `
-                        <div class="section-box" style="border-left-color: ${event.color};">
-                            <h4>🔥 Cause</h4>
-                            <p>${escapeHtml(causeText)}</p>
-                        </div>
-                        <div class="section-box" style="border-left-color: ${event.color};">
-                            <h4>⚡ Effect / Consequence</h4>
-                            <p>${escapeHtml(effectText)}</p>
+                        <div class="badges-grid" style="margin-bottom: 20px;">
+                            <div class="section-box" style="border-left-color: #ff9800; margin-bottom: 0;">
+                                <h4>🔥 Cause</h4>
+                                <p>${escapeHtml(parts[0].replace("Cause:", "").trim())}</p>
+                            </div>
+                            <div class="section-box" style="border-left-color: #4caf50; margin-bottom: 0;">
+                                <h4>⚡ Effect / Consequence</h4>
+                                <p>${escapeHtml(parts[1].trim())}</p>
+                            </div>
                         </div>
                     `;
                 } else {
@@ -710,6 +869,70 @@
                 `;
             }
 
+            // Long term impact — always shown
+            const impactHtml = `
+                <div class="section-box" style="border-left-color: #2196f3;">
+                    <h4>🌊 Long-term Impact</h4>
+                    ${event.long_term_impact
+                        ? `<p>${escapeHtml(event.long_term_impact)}</p>`
+                        : `<p class="empty-placeholder">Not available yet</p>`}
+                </div>
+            `;
+
+            // Did you know & Think about it — always shown
+            const extraBlocksHtml = `
+                <div class="did-you-know">
+                    <h4>💡 Did You Know?</h4>
+                    ${event.did_you_know
+                        ? `<p>${escapeHtml(event.did_you_know)}</p>`
+                        : `<p class="empty-placeholder">Not available yet</p>`}
+                </div>
+                <div class="think-about-it">
+                    <h4>🤔 Think About It</h4>
+                    ${event.think_about_it
+                        ? `<p>${escapeHtml(event.think_about_it)}</p>`
+                        : `<p class="empty-placeholder">Not available yet</p>`}
+                </div>
+            `;
+
+            // Quiz — always shown
+            const quizHtml = `
+                <div class="quiz-container">
+                    ${event.quiz_question
+                        ? `<div class="quiz-question">🎯 Quick Quiz: ${escapeHtml(event.quiz_question)}</div>`
+                        : `<div class="quiz-question" style="opacity:0.5;">🎯 Quick Quiz: <em>Not available yet</em></div>`}
+                    ${(event.quiz_question && event.quiz_answer)
+                        ? `<div class="quiz-answer-container" onclick="this.classList.toggle('revealed')">
+                               <div class="quiz-answer">${escapeHtml(event.quiz_answer)}</div>
+                               <div class="quiz-overlay">Tap to reveal answer 👀</div>
+                           </div>`
+                        : `<div class="quiz-answer-container"><div class="quiz-answer empty-placeholder">Answer coming soon</div></div>`}
+                </div>
+            `;
+
+            // Keywords — always shown
+            const keywordsHtml = (() => {
+                const tags = (event.keywords && event.keywords.length > 0)
+                    ? event.keywords.map(k => `<span class="keyword-tag">${escapeHtml(k)}</span>`).join("")
+                    : `<span class="empty-placeholder" style="font-size:13px;">No keywords yet</span>`;
+                return `<div class="keywords-section"><h4 style="color:#90a4ae;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🔑 Keywords</h4><div class="keywords-container">${tags}</div></div>`;
+            })();
+
+            // Vocabulary — always shown
+            const vocabHtml = (() => {
+                const bodyContent = (event.vocabulary && event.vocabulary.length > 0)
+                    ? `<table class="vocab-table"><tbody>${event.vocabulary.map(v => `
+                        <tr>
+                            <td class="vocab-word">${escapeHtml(v.word || v.term || "")}</td>
+                            <td class="vocab-def">${escapeHtml(v.definition || v.meaning || "")}</td>
+                        </tr>`).join("")}</tbody></table>`
+                    : `<p class="empty-placeholder">No vocabulary entries yet</p>`;
+                return `<div class="section-box" style="border-left-color: #673ab7; padding: 15px;">
+                    <h4>📚 Key Vocabulary</h4>
+                    ${bodyContent}
+                </div>`;
+            })();
+
             const hasImage = !!event.image;
             const cardClass = hasImage ? "detail-card" : "detail-card no-image";
             const isGif = event.image && event.image.toLowerCase().endsWith('.gif');
@@ -717,6 +940,7 @@
                 <div class="image-side">
                     <img class="event-image ${isGif ? 'no-kenburns' : ''}" src="${event.image}" alt="${escapeHtml(event.title)}">
                     <div class="image-overlay"></div>
+                    ${event.icon ? `<div style="position: absolute; top:20px; right:20px; font-size:40px; background:rgba(0,0,0,0.5); backdrop-filter:blur(5px); padding:10px; border-radius:50%; box-shadow:0 4px 10px rgba(0,0,0,0.3); z-index:5;">${escapeHtml(event.icon)}</div>` : ""}
                 </div>
             ` : "";
 
@@ -728,14 +952,25 @@
                         <div class="event-meta">
                             <div class="year-era-row">
                                 <span class="year-badge" style="background-color: ${event.color}; color: ${getContrastColor(event.color)};">📅 ${escapeHtml(event.year)}</span>
-                                <span class="era-badge">${escapeHtml(event.era)}</span>
+                                ${event.exam_importance ? `<span class="exam-badge">Exam: ${escapeHtml(event.exam_importance)}</span>` : ""}
                             </div>
-                            <h2 class="event-title">${escapeHtml(event.title)}</h2>
+                            <h2 class="event-title">${!hasImage && event.icon ? escapeHtml(event.icon) + ' ' : ''}${escapeHtml(event.title)}</h2>
                             <p class="event-subtitle">${escapeHtml(event.subtitle)}</p>
                         </div>
                         
                         <div class="event-details-body">
+                            ${keywordsHtml}
+                            <div class="section-box" style="border-left-color: ${event.color};">
+                                <h4>📖 What Happened</h4>
+                                ${event.what_happened
+                                    ? `<p style="font-size: 15px; line-height: 1.6; color: #eceff1;">${escapeHtml(event.what_happened)}</p>`
+                                    : `<p class="empty-placeholder">Not available yet</p>`}
+                            </div>
                             ${causeEffectHtml}
+                            ${impactHtml}
+                            ${vocabHtml}
+                            ${extraBlocksHtml}
+                            ${quizHtml}
                             
                             <div class="badges-grid">
                                 <div class="badge-card">
@@ -746,6 +981,14 @@
                                     <span class="label">📍 Location</span>
                                     <span class="val">${escapeHtml(event.location)}</span>
                                 </div>
+                                <div class="badge-card">
+                                    <span class="label">👥 Key People</span>
+                                    <span class="val">${event.people_involved && event.people_involved.length > 0 ? escapeHtml(event.people_involved.join(", ")) : '<em class="empty-placeholder">Not available yet</em>'}</span>
+                                </div>
+                                <div class="badge-card">
+                                    <span class="label">🏛️ Organizations</span>
+                                    <span class="val">${event.organizations && event.organizations.length > 0 ? escapeHtml(event.organizations.join(", ")) : '<em class="empty-placeholder">Not available yet</em>'}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -753,7 +996,7 @@
                             <a href="${prevEvent ? 'detail.html?id=' + prevEvent.id : '#'}" 
                                class="nav-link ${prevEvent ? '' : 'disabled'}" 
                                title="${prevEvent ? prevEvent.title : ''}">
-                               ⏮ Previous
+                                ⏮ Previous
                             </a>
                             
                             <button class="share-btn" onclick="copyShareLink()">
@@ -767,7 +1010,7 @@
                             <a href="${nextEvent ? 'detail.html?id=' + nextEvent.id : '#'}" 
                                class="nav-link ${nextEvent ? '' : 'disabled'}" 
                                title="${nextEvent ? nextEvent.title : ''}">
-                               Next ⏭
+                                Next ⏭
                             </a>
                         </div>
                     </div>
