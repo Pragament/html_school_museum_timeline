@@ -573,3 +573,198 @@ body {
     transform: translateX(-50%) scale(1.35);
     box-shadow: 0 0 12px #ff9800;
 }
+
+/* --- Enriched Schema Styles --- */
+
+.event-icon-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+.event-type-pill {
+    display: inline-block;
+    background: rgba(30, 136, 229, 0.25);
+    border: 1px solid rgba(30, 136, 229, 0.45);
+    color: #64b5f6;
+    padding: 2px 9px;
+    border-radius: 15px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-right: 6px;
+}
+
+.era-badge-inline {
+    display: inline-block;
+    background: rgba(0, 188, 212, 0.2);
+    border: 1px solid rgba(0, 188, 212, 0.4);
+    color: #4dd0e1;
+    padding: 2px 9px;
+    border-radius: 15px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.people-org-section {
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+.people-org-label {
+    font-size: 9px;
+    color: #90a4ae;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.person-tag, .org-tag {
+    display: inline-block;
+    background: rgba(103, 58, 183, 0.25);
+    border: 1px solid rgba(103, 58, 183, 0.45);
+    color: #ce93d8;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 9px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+.what-happened {
+    font-size: 13px;
+    color: #cfd8dc;
+    line-height: 1.5;
+    margin-top: 10px;
+    margin-bottom: 12px;
+}
+
+.cause-effect-container {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.cause-box, .effect-box {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 11.5px;
+    color: #b0bec5;
+    line-height: 1.4;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cause-box {
+    border-left: 3px solid #ff9800;
+}
+
+.effect-box {
+    border-left: 3px solid #4caf50;
+}
+
+.cause-effect-label {
+    font-size: 9px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.cause-box .cause-effect-label {
+    color: #ffb74d;
+}
+
+.effect-box .cause-effect-label {
+    color: #81c784;
+}
+
+.arrow-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #78909c;
+    font-size: 14px;
+}
+
+.timeline-connections {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+    margin-top: 10px;
+    font-size: 11px;
+}
+
+.connection-link {
+    color: #ffb74d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+.connection-link:hover {
+    color: #ffe0b2;
+}
+
+.chapter-badge-small {
+    background: rgba(0, 188, 212, 0.15);
+    color: #84ffff;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 9px;
+}
+
+/* People and Organizations Section on Timeline Cards */
+.people-org-section {
+    margin: 12px 0;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.people-org-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #90a4ae;
+    margin-bottom: 8px;
+}
+
+.person-tag, .org-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.person-tag {
+    background: linear-gradient(135deg, #673ab7, #512da8);
+    color: white;
+    border: 1px solid rgba(103, 58, 183, 0.5);
+}
+
+.org-tag {
+    background: linear-gradient(135deg, #00bcd4, #0097a7);
+    color: white;
+    border: 1px solid rgba(0, 188, 212, 0.5);
+}

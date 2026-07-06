@@ -5,7 +5,85 @@ if (eventId) {
     window.location.href = `detail.html?id=${eventId}`;
 }
 
-const EVENTS_JSON_URL = "/api/events";
+const PRAGAMENT_URL = "https://staticapis.pragament.com/lms/cbse/topic-timeline.json";
+const IMAGE_OVERRIDES_URL = "/api/image-overrides";
+
+const ERA_COLORS = {
+    "Prehistory": "#8bc34a",
+    "Ancient": "#cddc39",
+    "Ancient India": "#8bc34a",
+    "Global Trade": "#ffeb3b",
+    "Medieval India": "#ff9800",
+    "Mughal Empire": "#9c27b0",
+    "Colonial India": "#2196f3",
+    "Social Reform": "#00bcd4",
+    "Indian Nationalism": "#e91e63",
+    "World History": "#3f51b5"
+};
+
+const GRADE_COLORS = {
+    "Grade 6": "#4caf50",
+    "Grade 7": "#ff9800",
+    "Grade 8": "#2196f3",
+    "Grade 9": "#3f51b5",
+    "Grade 10": "#e91e63"
+};
+
+function processRawData(data, imageOverrides = {}) {
+    const subtopics = data?.timeline?.subtopics || [];
+    return subtopics.map((item, index) => {
+        const eventId = index + 1;
+        const subtopicName = item.subtopic_name || item.topic_name || "Untitled topic";
+        const topicName = item.topic_name || "";
+        const chapterName = item.chapter_name || "";
+        const subtitle = [topicName, chapterName].filter(Boolean).join(" | ");
+
+        let grade = String(item.grade || "").trim();
+        if (grade && !grade.toLowerCase().startsWith("grade")) grade = `Grade ${grade}`;
+        else if (!grade) grade = "Grade";
+
+        const location = item.display_location || item.location || item.corridor_classroom_position || "Location not specified";
+        const causeEffect = item.cause_effect || "Cause & effect details not available.";
+        const color = ERA_COLORS[chapterName] || GRADE_COLORS[grade] || "#ff9800";
+
+        const override = imageOverrides[eventId] || {};
+        const imgSrc = override.image || item.image_url || item.image || item.gif_url || item.thumbnail_url || "";
+        const isAi = override.is_ai_image ?? Boolean(imgSrc);
+
+        return {
+            id: eventId,
+            title: subtopicName,
+            topic_name: topicName,
+            subtitle,
+            year: item.year_period || "Period not specified",
+            era: item.era || chapterName || "Timeline",
+            cause_effect: causeEffect,
+            location,
+            geo_location: item.location || "",
+            panel_position: item.corridor_classroom_position || "",
+            grade,
+            color,
+            image: imgSrc,
+            is_ai_image: isAi,
+            event_type: item.event_type || "",
+            theme: item.theme || "",
+            icon: item.icon || "",
+            people_involved: item.people_involved || [],
+            organizations: item.organizations || [],
+            cause: item.cause || "",
+            what_happened: item.what_happened || "",
+            immediate_effect: item.immediate_effect || "",
+            long_term_impact: item.long_term_impact || "",
+            keywords: item.keywords || [],
+            vocabulary: item.vocabulary || [],
+            did_you_know: item.did_you_know || "",
+            think_about_it: item.think_about_it || "",
+            quiz_question: item.quiz_question || "",
+            quiz_answer: item.quiz_answer || "",
+            exam_importance: item.exam_importance || ""
+        };
+    });
+}
 
 let allTopics = [];
 let timelineMeta = {
@@ -57,14 +135,23 @@ async function loadTimelineData() {
     renderTimelineMessage("Loading timeline data...", true);
 
     try {
-        const response = await fetch(EVENTS_JSON_URL, { cache: "no-store" });
-        if (!response.ok) {
-            throw new Error(`Failed to load ${EVENTS_JSON_URL} status ${response.status}`);
+        // Fetch from Pragament and image overrides in parallel
+        const [dataResponse, overridesResponse] = await Promise.all([
+            fetch(PRAGAMENT_URL, { cache: "no-store" }),
+            fetch(IMAGE_OVERRIDES_URL, { cache: "no-store" }).catch(() => null)
+        ]);
+
+        if (!dataResponse.ok) {
+            throw new Error(`Failed to load data from Pragament: ${dataResponse.status}`);
         }
 
-        allTopics = await response.json();
+        const rawData = await dataResponse.json();
+        const imageOverrides = overridesResponse?.ok ? await overridesResponse.json() : {};
+
+        allTopics = processRawData(rawData, imageOverrides);
+
         if (allTopics.length === 0) {
-            throw new Error("No events found from API");
+            throw new Error("No events found in timeline data");
         }
 
         const titleEl = document.querySelector(".timeline-header h1 span");
@@ -77,7 +164,7 @@ async function loadTimelineData() {
         renderTimelineView("all", "");
     } catch (error) {
         console.error("Failed to load timeline data:", error);
-        renderTimelineMessage("Unable to load events from API. Please ensure the server is running.");
+        renderTimelineMessage("Unable to load timeline data. Please check your internet connection.");
     }
 }
 
@@ -111,33 +198,91 @@ function renderTimelineView(filterGrade = "all", searchTerm = "") {
 
     filteredTopics.forEach((topic, index) => {
         const side = index % 2 === 0 ? "left" : "right";
-        const causePreview = topic.cause_effect.substring(0, 100);
 
         let imageHtml = "";
         if (topic.image) {
             imageHtml = `
                 <div class="card-image-container">
                     <img class="card-image" src="${topic.image}" alt="${escapeHtml(topic.title)}">
+                    ${topic.icon ? `<div class="event-icon-overlay">${escapeHtml(topic.icon)}</div>` : ""}
                 </div>
             `;
+        }
+
+
+
+        let peopleOrgsHtml = "";
+        let people = topic.people_involved || [];
+        let orgs = topic.organizations || [];
+        if (people.length > 0 || orgs.length > 0) {
+            let tagsHtml = "";
+            people.forEach(p => tagsHtml += `<span class="person-tag">${escapeHtml(p)}</span>`);
+            orgs.forEach(o => tagsHtml += `<span class="org-tag">${escapeHtml(o)}</span>`);
+            peopleOrgsHtml = `
+                <div class="people-org-section">
+                    <div class="people-org-label">People & Organizations</div>
+                    ${tagsHtml}
+                </div>
+            `;
+        }
+
+        let whatHappenedHtml = "";
+        if (topic.what_happened) {
+            whatHappenedHtml = `<div class="what-happened">${escapeHtml(topic.what_happened)}</div>`;
+        } else {
+            const causePreview = topic.cause_effect ? topic.cause_effect.substring(0, 100) : "";
+            whatHappenedHtml = `<div class="cause-preview">📖 ${escapeHtml(causePreview)}${(topic.cause_effect && topic.cause_effect.length > 100) ? "..." : ""}</div>`;
+        }
+
+        let causeEffectBoxesHtml = "";
+        if (topic.cause || topic.immediate_effect) {
+            causeEffectBoxesHtml = `
+                <div class="cause-effect-container">
+                    ${topic.cause ? `
+                    <div class="cause-box">
+                        <span class="cause-effect-label">🔥 Cause</span>
+                        ${escapeHtml(topic.cause)}
+                    </div>
+                    ` : ""}
+                    ${(topic.cause && topic.immediate_effect) ? `<div class="arrow-box">→</div>` : ""}
+                    ${topic.immediate_effect ? `
+                    <div class="effect-box">
+                        <span class="cause-effect-label">💥 Effect</span>
+                        ${escapeHtml(topic.immediate_effect)}
+                    </div>
+                    ` : ""}
+                </div>
+            `;
+        }
+
+
+
+        let iconYearHtml = `📅 ${escapeHtml(topic.year)}`;
+        if (!topic.image && topic.icon) {
+             iconYearHtml = `${escapeHtml(topic.icon)} ${escapeHtml(topic.year)}`;
         }
 
         html += `
             <div class="timeline-item ${side}" data-id="${topic.id}">
                 <div class="timeline-dot"></div>
-                <span class="timeline-year-marker">📅 ${escapeHtml(topic.year)}</span>
+                <span class="timeline-year-marker">${iconYearHtml}</span>
                 <div class="timeline-content" style="border-left-color: ${topic.color}; --event-color: ${topic.color};">
                     ${imageHtml}
                     ${topic.topic_name ? `<div class="topic-label">${escapeHtml(topic.topic_name)}</div>` : ""}
                     <div class="title">${escapeHtml(topic.title)}</div>
+                    
                     <div class="badges-row">
                         <span class="grade-badge">${escapeHtml(topic.grade)}</span>
                     </div>
+                    
                     <div class="badges-row">
                         <span class="location-badge">📍 ${escapeHtml(topic.location)}</span>
                         ${topic.panel_position ? `<span class="panel-badge">🏛️ ${escapeHtml(topic.panel_position)}</span>` : ""}
                     </div>
-                    <div class="cause-preview">📖 ${escapeHtml(causePreview)}${topic.cause_effect.length > 100 ? "..." : ""}</div>
+                    
+                    ${peopleOrgsHtml}
+                    ${whatHappenedHtml}
+                    ${causeEffectBoxesHtml}
                 </div>
             </div>
         `;
