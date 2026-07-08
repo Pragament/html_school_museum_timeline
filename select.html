@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBSE History Museum - Select Curriculum</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
+            background: radial-gradient(ellipse at top, #1a1a3e 0%, #0a0a1a 60%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header .logo span { color: #ff9800; }
+
+        .header p {
+            color: #b0bec5;
+            font-size: 1rem;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1100px;
+        }
+
+        .curriculum-card {
+            background: rgba(18, 22, 35, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px 35px;
+            width: 300px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .curriculum-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--card-color);
+            border-radius: 24px 24px 0 0;
+        }
+
+        .curriculum-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--card-color);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px var(--card-glow);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--card-color);
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: #78909c;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .card-grades {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .grade-tag {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #b0bec5;
+        }
+
+        .select-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            background: var(--card-color);
+            color: #0a0a1a;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .select-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .footer {
+            margin-top: 50px;
+            color: #546e7a;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Card specific colors */
+        .card-cbse { --card-color: #ff9800; --card-glow: rgba(255, 152, 0, 0.2); }
+        .card-telangana { --card-color: #4caf50; --card-glow: rgba(76, 175, 80, 0.2); }
+        .card-ap { --card-color: #2196f3; --card-glow: rgba(33, 150, 243, 0.2); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">🏛️ HISTORY MUSEUM</div>
+        <p>Select your curriculum to explore the historical timeline</p>
+    </div>
+
+    <div class="cards-container">
+
+        <!-- CBSE -->
+        <div class="curriculum-card card-cbse" onclick="selectCurriculum('cbse')">
+            <span class="card-icon">📚</span>
+            <div class="card-title">CBSE</div>
+            <div class="card-subtitle">Central Board of Secondary Education</div>
+            <div class="card-grades">
+                <span class="grade-tag">Grade 6</span>
+                <span class="grade-tag">Grade 7</span>
+                <span class="grade-tag">Grade 8</span>
+                <span class="grade-tag">Grade 9</span>
+                <span class="grade-tag">Grade 10</span>
+            </div>
+            <button class="select-btn">Explore CBSE Timeline →</button>
+        </div>
+
+        <!-- SCERT Telangana -->
+        <div class="curriculum-card card-telangana" onclick="selectCurriculum('telangana')">
+            <span class="card-icon">🌿</span>
+            <div class="card-title">SCERT Telangana</div>
+            <div class="card-subtitle">State Council of Educational Research<br>Telangana Social Studies</div>
+            <div class="card-grades">
+                <span class="grade-tag">Grade 6</span>
+                <span class="grade-tag">Grade 7</span>
+                <span class="grade-tag">Grade 8</span>
+                <span class="grade-tag">Grade 9</span>
+                <span class="grade-tag">Grade 10</span>
+            </div>
+            <button class="select-btn">Explore Telangana Timeline →</button>
+        </div>
+
+        <!-- SCERT Andhra Pradesh -->
+        <div class="curriculum-card card-ap" onclick="selectCurriculum('ap')">
+            <span class="card-icon">🌊</span>
+            <div class="card-title">SCERT Andhra Pradesh</div>
+            <div class="card-subtitle">State Council of Educational Research<br>Andhra Pradesh Social Studies</div>
+            <div class="card-grades">
+                <span class="grade-tag">Grade 6</span>
+                <span class="grade-tag">Grade 7</span>
+                <span class="grade-tag">Grade 8</span>
+                <span class="grade-tag">Grade 9</span>
+                <span class="grade-tag">Grade 10</span>
+            </div>
+            <button class="select-btn">Explore AP Timeline →</button>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        🏫 History Museum · Powered by Pragament
+    </div>
+
+    <script>
+        const CURRICULUM_CONFIG = {
+            cbse: {
+                label: "CBSE",
+                url: "https://staticapis.pragament.com/lms/cbse/topic-timeline.json",
+                subtopicsKey: "subtopics"
+            },
+            telangana: {
+                label: "SCERT Telangana",
+                url: "https://staticapis.pragament.com/lms/scert_telangana/topic-timeline.json",
+                subtopicsKey: "topics"
+            },
+            ap: {
+                label: "SCERT Andhra Pradesh",
+                url: "https://staticapis.pragament.com/lms/scert_ap/topic-timeline.json",
+                subtopicsKey: "topics"
+            }
+        };
+
+        function selectCurriculum(key) {
+            const config = CURRICULUM_CONFIG[key];
+            localStorage.setItem("selectedCurriculum", key);
+            localStorage.setItem("curriculumUrl", config.url);
+            localStorage.setItem("curriculumLabel", config.label);
+            localStorage.setItem("curriculumSubtopicsKey", config.subtopicsKey);
+            // Clear cache so fresh data is fetched for the new curriculum
+            sessionStorage.removeItem("pragamentCache");
+            window.location.href = "index.html";
+        }
+
+        // If already selected, show which one is active
+        const current = localStorage.getItem("selectedCurriculum");
+        if (current) {
+            const btn = document.querySelector(`.card-${current} .select-btn`);
+            if (btn) btn.textContent = "✓ Currently Selected";
+        }
+    </script>
+
+</body>
+</html>
