@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CBSE History Museum - Historical Timeline View</title>
+    <title>History Museum - Historical Timeline View</title>
     <link rel="stylesheet" href="timeline.css?v=2">
 </head>
 <body>
     <div class="mode-toggle-bar">
         <div class="logo">
-            🏛️ CBSE HISTORY MUSEUM <span id="curriculumLabel">Historical Timeline</span>
+            🏛️ HISTORY MUSEUM <span id="curriculumLabel">Historical Timeline</span>
         </div>
         <div class="mode-buttons">
             <a href="select.html" class="mode-btn" style="background: rgba(255,152,0,0.15); border-color: #ff9800;">
@@ -52,6 +52,7 @@
         const currLabel = localStorage.getItem("curriculumLabel") || "CBSE";
         document.getElementById("curriculumLabel").textContent = currLabel;
         document.getElementById("timelineSubtitle").textContent = `${currLabel} Social Science | Grade 6-10 | Chronological Order`;
+        document.title = `${currLabel} History Museum - Timeline`;
     </script>
 </body>
 </html>
