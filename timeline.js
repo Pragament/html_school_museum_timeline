@@ -8,6 +8,12 @@ if (eventId) {
 const PRAGAMENT_URL = "https://staticapis.pragament.com/lms/cbse/topic-timeline.json";
 const IMAGE_OVERRIDES_URL = "/api/image-overrides";
 
+// Read selected curriculum from localStorage (set by select.html)
+const SELECTED_CURRICULUM = localStorage.getItem("selectedCurriculum") || "cbse";
+const CURRICULUM_URL = localStorage.getItem("curriculumUrl") || PRAGAMENT_URL;
+const CURRICULUM_LABEL = localStorage.getItem("curriculumLabel") || "CBSE";
+const CURRICULUM_SUBTOPICS_KEY = localStorage.getItem("curriculumSubtopicsKey") || "subtopics";
+
 const ERA_COLORS = {
     "Prehistory": "#8bc34a",
     "Ancient": "#cddc39",
@@ -30,7 +36,7 @@ const GRADE_COLORS = {
 };
 
 function processRawData(data, imageOverrides = {}) {
-    const subtopics = data?.timeline?.subtopics || [];
+    const subtopics = data?.timeline?.[CURRICULUM_SUBTOPICS_KEY] || [];
     return subtopics.map((item, index) => {
         const eventId = index + 1;
         const subtopicName = item.subtopic_name || item.topic_name || "Untitled topic";
@@ -87,7 +93,7 @@ function processRawData(data, imageOverrides = {}) {
 
 let allTopics = [];
 let timelineMeta = {
-    title: "CBSE Social Science History",
+    title: `${CURRICULUM_LABEL} Social Science History`,
     description: "Full historical timeline with Grade, Chapter Name, Topic Name, Subtopic Name, Year/Period, Location, Cause & Effect, Corridor/Classroom Position, and Display Location"
 };
 
@@ -142,9 +148,9 @@ async function loadTimelineData() {
         if (cached) {
             rawData = JSON.parse(cached);
         } else {
-            const dataResponse = await fetch(PRAGAMENT_URL, { cache: "no-store" });
+            const dataResponse = await fetch(CURRICULUM_URL, { cache: "no-store" });
             if (!dataResponse.ok) {
-                throw new Error(`Failed to load data from Pragament: ${dataResponse.status}`);
+                throw new Error(`Failed to load data from curriculum: ${dataResponse.status}`);
             }
             rawData = await dataResponse.json();
             sessionStorage.setItem("pragamentCache", JSON.stringify(rawData));

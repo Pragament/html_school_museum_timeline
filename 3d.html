@@ -117,6 +117,7 @@
             width: 200px;
             height: 4px;
             -webkit-appearance: none;
+            appearance: none;
             background: #555;
             border-radius: 5px;
             cursor: pointer;
@@ -307,12 +308,33 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-bottom: 2px solid #ff9800; z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+        <div style="color: white; font-weight: bold; font-size: 14px;">
+            🏛️ CBSE HISTORY MUSEUM <span id="threeDCurriculumLabel" style="color: #ff9800;">3D Tour</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="select.html" style="background: rgba(255,152,0,0.15); border: 1px solid #ff9800; color: white; text-decoration: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
+                🔄 Change Board
+            </a>
+            <a href="index.html" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; text-decoration: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
+                📅 TIMELINE
+            </a>
+            <a href="admin.html" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; text-decoration: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
+                👨‍🏫 TEACHER
+            </a>
+            <a href="3d.html" style="background: linear-gradient(135deg, #ff9800, #f57c00); border: none; color: #000; text-decoration: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
+                🎮 3D TOUR
+            </a>
+        </div>
+    </div>
+
     <div class="loading" id="loading">
         <img src="images/loading.gif" alt="Loading..." style="width: 30px; height: 30px; vertical-align: middle; margin-right: 10px;">
         🤖 Loading 3D Museum Tour - Human-Like Robot Guide...
     </div>
-    <div class="title-overlay">🏛️ CBSE HISTORY MUSEUM | Robot Walks Like Human Tour Guide 🚶</div>
-    <div class="location-tag" id="locationTag">📍 MAIN CORRIDOR</div>
+    <div class="title-overlay" style="top: 60px;">🏛️ CBSE HISTORY MUSEUM | Robot Walks Like Human Tour Guide 🚶</div>
+    <div class="location-tag" id="locationTag" style="top: 120px;">📍 MAIN CORRIDOR</div>
     <div class="controls-hint">🖱️ Drag to look | Robot faces direction while walking 🚶</div>
 
     <div class="tour-controls" id="tourControls">
@@ -352,17 +374,24 @@
         import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
         // --- Waypoints with directions (facing angle while walking) ---
-        const TIMELINE_API_URL = "https://staticapis.pragament.com/lms/cbse/topic-timeline.json";
+        // Read selected curriculum from localStorage (set by select.html)
+        const SELECTED_CURRICULUM = localStorage.getItem("selectedCurriculum") || "cbse";
+        const CURRICULUM_URL = localStorage.getItem("curriculumUrl") || "https://staticapis.pragament.com/lms/cbse/topic-timeline.json";
+        const CURRICULUM_LABEL = localStorage.getItem("curriculumLabel") || "CBSE";
+        const CURRICULUM_SUBTOPICS_KEY = localStorage.getItem("curriculumSubtopicsKey") || "subtopics";
+        
+        // Update header with selected curriculum
+        document.getElementById("threeDCurriculumLabel").textContent = `${CURRICULUM_LABEL} - 3D Tour`;
 
         let waypoints = [];
         let panelsGroup = [];
 
         async function fetchTimelineData() {
-            const res = await fetch( TIMELINE_API_URL );
-            if ( !res.ok ) {
-                throw new Error( `Failed to fetch timeline: ${res.status}` );
+            const response = await fetch(CURRICULUM_URL);
+            if ( !response.ok ) {
+                throw new Error( `Failed to fetch timeline: ${response.status}` );
             }
-            return await res.json();
+            return await response.json();
         }
         function extractSortableYear( item ) {
             const raw = `${item.year_period || item.subtitle || item.subtopic_name || ""}`.toLowerCase();
@@ -376,10 +405,10 @@
             return value;
         }   
         function normalizeTimelineData( apiData ) {
-            // Check if data is nested under timeline.subtopics
+            // Check if data is nested under timeline with dynamic subtopics key
             let items = [];
-            if ( apiData && apiData.timeline && Array.isArray( apiData.timeline.subtopics ) ) {
-                items = apiData.timeline.subtopics;
+            if ( apiData && apiData.timeline && Array.isArray( apiData.timeline[CURRICULUM_SUBTOPICS_KEY] ) ) {
+                items = apiData.timeline[CURRICULUM_SUBTOPICS_KEY];
             } else if ( Array.isArray( apiData ) ) {
                 items = apiData;
             } else {
