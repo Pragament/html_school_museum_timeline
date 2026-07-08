@@ -8,8 +8,13 @@
 </head>
 <body>
     <div class="mode-toggle-bar">
-        <div class="logo">🏛️ CBSE HISTORY MUSEUM <span>Historical Timeline</span></div>
+        <div class="logo">
+            🏛️ CBSE HISTORY MUSEUM <span id="curriculumLabel">Historical Timeline</span>
+        </div>
         <div class="mode-buttons">
+            <a href="select.html" class="mode-btn" style="background: rgba(255,152,0,0.15); border-color: #ff9800;">
+                🔄 <span id="changeCurriculumBtn">Change Board</span>
+            </a>
             <a href="index.html" class="mode-btn active">📅 TIMELINE VIEW</a>
             <a href="admin.html" class="mode-btn">👨‍🏫 TEACHER PORTAL</a>
             <a href="3d.html" class="mode-btn">🎮 3D TOUR (ROBOT GUIDE)</a>
@@ -19,7 +24,7 @@
     <main id="timelineView" class="timeline-view">
         <div class="timeline-header">
             <h1>📅 <span>Historical Timeline</span> of Indian & World History</h1>
-            <p class="subtitle">CBSE Social Science | Grade 6-10 | Chronological Order</p>
+            <p class="subtitle" id="timelineSubtitle">CBSE Social Science | Grade 6-10 | Chronological Order</p>
         </div>
 
         <div class="timeline-controls">
@@ -42,5 +47,11 @@
 
 
     <script src="timeline.js?v=2"></script>
+    <script>
+        // Update header with selected curriculum
+        const currLabel = localStorage.getItem("curriculumLabel") || "CBSE";
+        document.getElementById("curriculumLabel").textContent = currLabel;
+        document.getElementById("timelineSubtitle").textContent = `${currLabel} Social Science | Grade 6-10 | Chronological Order`;
+    </script>
 </body>
 </html>

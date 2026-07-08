@@ -669,7 +669,7 @@
 
     <!-- Header bar with live server status -->
     <div class="mode-toggle-bar">
-        <div class="logo">🏛️ CBSE HISTORY MUSEUM <span>Teacher Lab Panel</span></div>
+        <div class="logo">🏛️ CBSE HISTORY MUSEUM <span id="adminCurriculumLabel">Teacher Lab Panel</span></div>
         
         <div class="server-status-pill">
             <span class="status-dot status-offline" id="headerStatusDot"></span>
@@ -677,6 +677,9 @@
         </div>
 
         <div class="mode-buttons">
+            <a href="select.html" class="mode-btn" style="background: rgba(255,152,0,0.15); border-color: #ff9800;">
+                🔄 <span>Change Board</span>
+            </a>
             <a href="index.html" class="mode-btn">📅 TIMELINE VIEW</a>
             <a href="admin.html" class="mode-btn active">👨‍🏫 TEACHER PORTAL</a>
             <a href="3d.html" class="mode-btn">🎮 3D TOUR</a>
@@ -1845,6 +1848,11 @@
                     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
                 }[m]));
             }
+        </script>
+        <script>
+            // Update admin header with selected curriculum
+            const currLabel = localStorage.getItem("curriculumLabel") || "CBSE";
+            document.getElementById("adminCurriculumLabel").textContent = `${currLabel} - Teacher Lab Panel`;
         </script>
 </body>
 </html>
