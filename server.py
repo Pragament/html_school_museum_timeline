@@ -8,6 +8,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
+try:
+    import httpx
+    HTTPX_AVAILABLE = True
+except ImportError:
+    HTTPX_AVAILABLE = False
+    import urllib.request
 
 # Import local backend modules
 from backend.config import load_config, save_config, AppConfig
@@ -228,6 +234,56 @@ async def get_image_overrides():
             pass
     return overrides
 
+@app.get("/api/events")
+async def get_events():
+    """Serves the full enriched events data from local events_data.json.
+    This is the primary data source for the timeline and detail pages."""
+    if not os.path.exists(EVENTS_DATA_FILE):
+        raise HTTPException(status_code=404, detail="events_data.json not found")
+    try:
+        with open(EVENTS_DATA_FILE, "r", encoding="utf-8") as f:
+            events = json.load(f)
+        return events
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read events: {e}")
+
+
+# --- BOARD DATA PROXY ENDPOINTS ---
+
+SECONDARY_BOARDS = {
+    "cbse":      "https://staticapis.pragament.com/lms/cbse/topic-timeline.json",
+    "telangana": "https://staticapis.pragament.com/lms/scert_telangana/topic-timeline.json",
+    "ap":        "https://staticapis.pragament.com/lms/scert_ap/topic-timeline.json",
+}
+
+async def _fetch_board_json(url: str):
+    """Fetch board JSON from remote Pragament API."""
+    if HTTPX_AVAILABLE:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.get(url)
+            resp.raise_for_status()
+            return resp.json()
+    else:
+        loop = asyncio.get_event_loop()
+        def _sync_fetch():
+            with urllib.request.urlopen(url, timeout=15) as r:
+                return json.loads(r.read().decode())
+        return await loop.run_in_executor(None, _sync_fetch)
+
+@app.get("/api/board/{board_key}")
+async def get_board_data(board_key: str):
+    """Server-side proxy for secondary board data. Avoids browser CORS issues."""
+    if board_key not in SECONDARY_BOARDS:
+        raise HTTPException(status_code=404, detail=f"Unknown board: {board_key}")
+        
+
+
+    try:
+        data = await _fetch_board_json(SECONDARY_BOARDS[board_key])
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Failed to fetch board data: {e}")
+
 @app.post("/api/reset_event")
 async def reset_event(req: dict):
     event_id = req.get("id")
@@ -349,6 +405,7 @@ app.mount("/", StaticFiles(directory=".", html=True), name="static")
 if __name__ == "__main__":
     import uvicorn
     print("CBSE HISTORY MUSEUM - AI-POWERED LAB SERVER STARTING...")
-    print(f"DATA SOURCE: Pragament → {PRAGAMENT_API_URL}")
+    print(f"DATA SOURCE: Pragament -> {PRAGAMENT_API_URL}")
+
     print(f"AI IMAGE OVERRIDES: {EVENTS_DATA_FILE}")
     uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
